@@ -6,16 +6,22 @@ function Index() {
   return <h2>prova</h2>;
 }
 
+function About() {
+  return <h2>about me</h2>;
+}
+
 function App() {
   return (
     <>
+      <NavBar />
+
       <Styles.Wrapper>
-        <NavBar />
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/play" element={<Board />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
       </Styles.Wrapper>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/play" element={<Board />} />
-      </Routes>
     </>
   );
 }

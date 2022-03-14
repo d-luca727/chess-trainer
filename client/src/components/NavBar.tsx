@@ -32,7 +32,9 @@ function NavBar() {
             <MobileNavbar.Item>
               <Link to="/play">Play</Link>
             </MobileNavbar.Item>
-            <MobileNavbar.Item>About</MobileNavbar.Item>
+            <MobileNavbar.Item>
+              <Link to="/about">About</Link>
+            </MobileNavbar.Item>
           </MobileNavbar.Items>
         </MobileNavbar.Wrapper>
       ) : (
@@ -45,7 +47,9 @@ function NavBar() {
             <Navbar.Item>
               <Link to="/play">Play</Link>
             </Navbar.Item>
-            <Navbar.Item>About</Navbar.Item>
+            <Navbar.Item>
+              <Link to="/about">About</Link>
+            </Navbar.Item>
           </Navbar.Items>
         </Navbar.Wrapper>
       )}
