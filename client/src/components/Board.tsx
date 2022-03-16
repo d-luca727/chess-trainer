@@ -1,5 +1,5 @@
 import { toColor, toDests } from "../utils/chessUtils";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Chessground from "@react-chess/chessground";
 import { ChessInstance, ShortMove } from "chess.js";
 import { Config } from "@react-chess/chessground/node_modules/chessground/config";
@@ -51,6 +51,8 @@ const PlayvsPlayer: React.FC = () => {
 
   const isMobile = windowDimension <= 640;
 
+  const [fen, setFen] = useState("");
+
   return (
     <div className="chessboard">
       {isMobile ? (
@@ -60,7 +62,23 @@ const PlayvsPlayer: React.FC = () => {
           config={config}
         />
       ) : (
-        <Chessground config={config} />
+        <>
+          <Chessground config={config} />
+          <input
+            type="text"
+            value={fen}
+            onChange={(e) => setFen(e.target.value)}
+          ></input>
+          <button
+            onClick={() =>
+              setConfig(() => {
+                return { fen: fen };
+              })
+            }
+          >
+            Ciao
+          </button>
+        </>
       )}
     </div>
   );
