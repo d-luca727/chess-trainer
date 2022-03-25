@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import styled from "styled-components";
 import Board from "./components/Board";
+import AnalysisBoard from "./components/AnalysisBoard";
 function Index() {
   return <h2>prova</h2>;
 }
@@ -18,7 +19,7 @@ function App() {
       <Styles.Wrapper>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/play" element={<Board />} />
+          <Route path="/play" element={<AnalysisBoard />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </Styles.Wrapper>
