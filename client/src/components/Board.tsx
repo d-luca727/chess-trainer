@@ -69,7 +69,7 @@ const PlayvsPlayer: React.FC = () => {
             value={fen}
             onChange={(e) => setFen(e.target.value)}
           ></input>
-          <button
+          {/* <button
             onClick={() =>
               setConfig(() => {
                 return { fen: fen };
@@ -77,7 +77,7 @@ const PlayvsPlayer: React.FC = () => {
             }
           >
             Ciao
-          </button>
+          </button> */}
         </>
       )}
     </div>

@@ -1,5 +1,5 @@
 import { toColor, toDests } from "../utils/chessUtils";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, SetStateAction } from "react";
 import Chessground from "@react-chess/chessground";
 import { ChessInstance, Move, ShortMove } from "chess.js";
 import { Config } from "@react-chess/chessground/node_modules/chessground/config";
@@ -11,6 +11,24 @@ import { Col, Row } from "react-bootstrap";
 const Chessjs = require("chess.js");
 
 const PlayvsPlayer: React.FC = () => {
+  //functions
+
+  function updateBoard(chess: ChessInstance, fen?: string | undefined) {
+    setConfig(() => {
+      return {
+        turnColor: toColor(chess), //toColor returns the player's color that has to move
+        movable: {
+          color: toColor(chess),
+          dests: toDests(chess), //toDests sets the legal moves
+        },
+      };
+    });
+
+    setConfig(() => {
+      return { fen: fen };
+    });
+  }
+
   const [chess] = useState<ChessInstance>(
     new Chessjs("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   );
@@ -23,16 +41,10 @@ const PlayvsPlayer: React.FC = () => {
       events: {
         after: (orig: any, dest: any) => {
           const res = chess.move({ from: orig, to: dest }); //setting the chess.js object first
-          setMoves([...moves, moves.push({ move: res?.san, config: config })]); //setting the moves for the analysis board
-          setConfig((prevState) => {
-            return {
-              turnColor: toColor(chess), //toColor returns the player's color that has to move
-              movable: {
-                color: toColor(chess),
-                dests: toDests(chess), //toDests sets the legal moves
-              },
-            };
-          });
+
+          updateBoard(chess);
+
+          setMove(res as Move);
         },
       },
     },
@@ -47,10 +59,6 @@ const PlayvsPlayer: React.FC = () => {
     setWindowDimension(window.innerWidth);
   }, []);
 
-  /*  useEffect(() => {
-    if (move) setMoves([...moves, { move: move?.san, config: config }]);
-  }, [move]); */
-
   useEffect(() => {
     function handleResize() {
       setWindowDimension(window.innerWidth);
@@ -63,6 +71,15 @@ const PlayvsPlayer: React.FC = () => {
   const isMobile = windowDimension <= 640;
 
   const [moves, setMoves] = useState<any>([]);
+  const [move, setMove] = useState<Move>();
+
+  useEffect(() => {
+    if (move)
+      setMoves((state: any) => [
+        ...state,
+        { move: move?.san, chess: chess, fen: chess.fen() },
+      ]);
+  }, [move]);
 
   return (
     <div>
@@ -89,7 +106,10 @@ const PlayvsPlayer: React.FC = () => {
                 {moves &&
                   moves.map(
                     (
-                      move: { move: any; config: any } | null | undefined,
+                      move:
+                        | { move: any; chess: any; fen: any }
+                        | null
+                        | undefined,
                       index: number
                     ) =>
                       index % 2 === 0 ? (
@@ -99,7 +119,7 @@ const PlayvsPlayer: React.FC = () => {
                           </span>
                           <button
                             className="move-w"
-                            onClick={() => setConfig(move?.config)}
+                            onClick={() => updateBoard(move?.chess, move?.fen)}
                           >
                             {move?.move}
                           </button>
@@ -109,7 +129,7 @@ const PlayvsPlayer: React.FC = () => {
                           <button
                             key={index}
                             className="move-b"
-                            onClick={() => setConfig(move?.config)}
+                            onClick={() => updateBoard(move?.chess, move?.fen)}
                           >
                             ..{move?.move}
                           </button>
