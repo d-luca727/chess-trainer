@@ -1,7 +1,7 @@
 {
   "name": "opening-trainer",
   "version": "1.0.0",
-  "description": "��#\u0000 \u0000o\u0000p\u0000e\u0000n\u0000i\u0000n\u0000g\u0000-\u0000t\u0000r\u0000a\u0000i\u0000n\u0000e\u0000r\u0000\r\u0000 \u0000",
+  "description": "**name to decide** is a tool chess players could use to learn and review new openings as well as positions you want to learn better. It is interactive and very effective.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,10 +18,9 @@
   },
   "homepage": "https://github.com/Proioxis4/opening-trainer#readme",
   "dependencies": {
-    "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
-    "mongodb": "^4.4.1",
+    "mongoose": "^6.2.9",
     "nodemon": "^2.0.15"
   }
 }

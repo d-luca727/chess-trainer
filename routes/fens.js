@@ -1,8 +1,7 @@
 const express = require("express");
-const ApiController = require("./controller.js");
-
 const router = express.Router();
+const { fens } = require("../controllers/fens");
 
-router.route("/");
+router.route("/").get(fens);
 
 module.exports = router;
