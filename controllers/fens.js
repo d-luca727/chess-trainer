@@ -2,8 +2,11 @@ const Fen = require("../models/Fen");
 const ErrorResponse = require("../utils/ErrorRes.js");
 
 exports.getFens = async (req, res, next) => {
+  let { amount } = req.query;
+  if (amount === undefined || amount > 500) amount = 100;
   try {
-    let data = await Fen.find();
+    let data = await Fen.find().limit(amount);
+    console.log(amount);
     res.status(200).json({ success: true, data: data });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });

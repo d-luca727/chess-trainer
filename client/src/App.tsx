@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import styled from "styled-components";
 import Board from "./components/Board";
-import Play from "./components/Play";
+import Collections from "./components/Collections";
 function Index() {
   return <h2>prova</h2>;
 }
@@ -19,7 +19,7 @@ function App() {
       <Styles.Wrapper>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/play" element={<Play />} />
+          <Route path="/play" element={<Collections />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </Styles.Wrapper>

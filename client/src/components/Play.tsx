@@ -19,32 +19,7 @@ const Play: React.FC = () => {
     new Chessjs("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   );
 
-  const [config, setConfig] = useState<Partial<Config> | undefined>({
-    /* 
-    movable: {
-      color: "white",
-      free: false,
-      dests: toDests(chess), //toDests sets the legal moves
-      events: {
-        after: (orig: any, dest: any) => {
-          const res = chess.move({ from: orig, to: dest }); //setting the chess.js object first
-
-          setConfig((prevState) => {
-            return {
-              turnColor: toColor(chess), //toColor returns the player's color that has to move
-              movable: {
-                color: toColor(chess),
-                dests: toDests(chess), //toDests sets the legal moves
-              },
-            };
-          });
-        },
-      },
-    },
-    draggable: {
-      showGhost: true,
-    }, */
-  });
+  const [config, setConfig] = useState<Partial<Config> | undefined>({});
 
   const [windowDimension, setWindowDimension] = useState(0);
 

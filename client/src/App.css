@@ -1,0 +1,9 @@
+.fens-card-container {
+  min-height: 65vh !important;
+}
+.fen-card {
+  min-width: 250px;
+}
+.fen-card {
+  width: 35px;
+}
