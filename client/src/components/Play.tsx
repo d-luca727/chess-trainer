@@ -1,7 +1,7 @@
 import { toColor, toDests } from "../utils/chessUtils";
 import React, { useEffect, useState, useRef } from "react";
 import Chessground from "@react-chess/chessground";
-import { ChessInstance, ShortMove } from "chess.js";
+import { ChessInstance } from "chess.js";
 import { Config } from "@react-chess/chessground/node_modules/chessground/config";
 const Chessjs = require("chess.js");
 
