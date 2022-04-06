@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Chessground from "@react-chess/chessground";
-import { Link } from "react-router-dom";
-import { Card, Row, Col, Input } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { Card, Row, Col, Button } from "antd";
 
 const boardWidth = 150;
 
 const Collections = () => {
+  const navigate = useNavigate();
   const [fens, setFens] = useState<any>([]);
   useEffect(() => {
     const fetch = async () => {
@@ -26,10 +27,14 @@ const Collections = () => {
 
     fetch();
   }, []);
-  if (fens.length === 0) return <>"loading..."</>;
+  if (fens.length === 0) return <>loading...</>;
   return (
     <>
-      <Row gutter={[24, 24]} className="fens-card-container">
+      <Row gutter={[24, 24]}>
+        <Col span={24}>
+          <Button onClick={() => navigate("/add-study")}>Add a Study</Button>
+        </Col>
+
         {fens?.map(
           (fen: {
             _id: React.Key | null | undefined;
@@ -49,10 +54,14 @@ const Collections = () => {
                       <Chessground
                         height={boardWidth}
                         width={boardWidth}
-                        config={{ fen: fen?.fens[0].fen }}
+                        config={{ fen: fen?.fens[0].fen, coordinates: false }}
                       />
                     ) : (
-                      <Chessground height={boardWidth} width={boardWidth} />
+                      <Chessground
+                        height={boardWidth}
+                        width={boardWidth}
+                        config={{ coordinates: false }}
+                      />
                     )}
                   </p>
                   <p>Number of Positions to study: {fen.fens.length}</p>

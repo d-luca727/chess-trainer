@@ -8,6 +8,7 @@ const FenSchema = new mongoose.Schema({
 
     required: [true, "Please provide a study name"],
     maxlength: 26,
+    minlength: 4,
   },
   by: {
     type: String,
@@ -17,7 +18,7 @@ const FenSchema = new mongoose.Schema({
   private: {
     type: String,
     required: [true, "Please provide a password"],
-    minlength: 4,
+    minlength: 6,
   },
 
   fens: [

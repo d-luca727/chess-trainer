@@ -1,8 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import styled from "styled-components";
-import Board from "./components/Board";
+
 import Collections from "./components/Collections";
+
+import AddStudy from "./components/forms/AddStudy";
+import AddFens from "./components/forms/AddFens";
 function Index() {
   return <h2>prova</h2>;
 }
@@ -21,6 +24,9 @@ function App() {
           <Route path="/" element={<Index />} />
           <Route path="/play" element={<Collections />} />
           <Route path="/about" element={<About />} />
+          {/* form stuff */}
+          <Route path="/add-study" element={<AddStudy />} />
+          <Route path="/add-study/fens" element={<AddFens />} />
         </Routes>
       </Styles.Wrapper>
     </>
