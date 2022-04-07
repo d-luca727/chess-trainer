@@ -6,6 +6,7 @@ import Collections from "./components/Collections";
 
 import AddStudy from "./components/forms/AddStudy";
 import AddFens from "./components/forms/AddFens";
+import EditFens from "./components/forms/EditFens";
 function Index() {
   return <h2>prova</h2>;
 }
@@ -27,6 +28,7 @@ function App() {
           {/* form stuff */}
           <Route path="/add-study" element={<AddStudy />} />
           <Route path="/add-study/fens" element={<AddFens />} />
+          <Route path="/add-study/fens/:fenId" element={<EditFens />} />
         </Routes>
       </Styles.Wrapper>
     </>

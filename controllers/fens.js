@@ -12,6 +12,17 @@ exports.getFens = async (req, res, next) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+exports.getFenId = async (req, res, next) => {
+  const id = req.params.fenId;
+  try {
+    let data = await Fen.findById(id);
+
+    res.status(200).json({ success: true, data: data });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
 exports.postFens = async (req, res, next) => {
   const { collection_name, private, fens } = req.body;
   let { by } = req.body;
@@ -19,15 +30,23 @@ exports.postFens = async (req, res, next) => {
     return new ErrorResponse("Provide a collection name!", 400);
 
   if (by === undefined || by.length === 0) by = "Anonymous";
-  try {
-    const collection = await Fen.create({
-      collection_name,
-      by,
-      private,
-      fens,
-    });
 
-    res.status(201).json({ success: true, data: "success", collection });
+  let data = {
+    collection_name: collection_name,
+    by: by,
+    fens: fens,
+  };
+
+  if (private !== undefined) {
+    data.private = private;
+  }
+
+  try {
+    const collection = await Fen.create(data);
+
+    res
+      .status(201)
+      .json({ success: true, data: { status: "success", id: collection._id } });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }

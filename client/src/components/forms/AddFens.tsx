@@ -1,7 +1,10 @@
+import { LocationState } from "../../types";
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Typography, Form, Input, Button } from "antd";
 import Chessground from "@react-chess/chessground";
+
+import axios from "axios";
 
 import { toColor, toDests } from "../../utils/chessUtils";
 import { Config } from "@react-chess/chessground/node_modules/chessground/config";
@@ -10,17 +13,12 @@ const Chessjs = require("chess.js");
 
 const { Title } = Typography;
 
-interface LocationState {
-  collectionName: string;
-  password: string | undefined;
-  confirmPassword: string | undefined;
-}
-
 const AddFens = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const state = location.state as LocationState; // Type Casting, then you can get the params passed via router
 
-  const [config, setConfig] = useState<Partial<Config> | undefined>();
+  const [chessConfig, setChessConfig] = useState<Partial<Config> | undefined>();
   const [chess] = useState<ChessInstance>(
     new Chessjs("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   );
@@ -37,15 +35,45 @@ const AddFens = () => {
     return _chess.move(value) !== null;
   };
 
-  const onSubmit = (values: any) => {
-    setPositions((prev: any) => [...prev, values]);
+  const onAdd = (values: any) => {
+    setPositions((prev: any) => {
+      if (values.description === undefined) {
+        values.description = "";
+      }
+      return [...prev, values];
+    });
   };
-  useEffect(() => {
-    console.log(positions);
-  }, [positions]);
+  const onSubmit = (values: any) => {
+    //post request
+    let data: any = {
+      collection_name: state.collectionName,
+      by: state.by,
+      fens: positions,
+    };
+    if (state.password !== undefined) {
+      data.private = state.password;
+    }
+
+    const post = async () => {
+      try {
+        await axios.post("/api/fens", data).then((res) => {
+          const id = res.data.data.id;
+
+          navigate(id);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    post();
+  };
+
   return (
     <>
       <h1>Study Name: {state.collectionName}</h1>
+      <br />
+      <h2>Author Name: {state.by}</h2>
 
       <Chessground config={{ fen: fen }} />
       {/* <label>Insert Fen:</label>
@@ -67,7 +95,7 @@ const AddFens = () => {
         autoComplete="off"
         labelCol={{ span: 10 }}
         wrapperCol={{ span: 14 }}
-        onFinish={(values) => onSubmit(values)}
+        onFinish={(values) => onAdd(values)}
         onFinishFailed={(error) => {
           console.log({ error });
           console.log(error);
@@ -76,6 +104,9 @@ const AddFens = () => {
         <Form.Item
           name="fen"
           label="Fen"
+          initialValue={
+            "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+          }
           rules={[
             {
               required: true,
@@ -136,7 +167,7 @@ const AddFens = () => {
         </Form.Item>
         <Form.Item wrapperCol={{ span: 24 }}>
           <Button block type="primary" htmlType="submit">
-            Submit Position
+            Add Position
           </Button>
         </Form.Item>
       </Form>
@@ -150,6 +181,9 @@ const AddFens = () => {
             <br />
           </div>
         ))}
+        {positions.length > 0 && (
+          <Button onClick={onSubmit}>Submit your Study</Button>
+        )}
       </div>
     </>
   );

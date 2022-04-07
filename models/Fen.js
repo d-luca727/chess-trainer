@@ -12,12 +12,10 @@ const FenSchema = new mongoose.Schema({
   },
   by: {
     type: String,
-
     maxlength: 16,
   },
   private: {
     type: String,
-    required: [true, "Please provide a password"],
     minlength: 6,
   },
 

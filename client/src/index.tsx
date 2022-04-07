@@ -13,3 +13,5 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
+
+/* "proxy": "http://127.0.0.1:4000", */

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Button, Checkbox, DatePicker, Input, Select, Space } from "antd";
+import { Form, Button, Checkbox, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 
 const AddStudy = () => {
