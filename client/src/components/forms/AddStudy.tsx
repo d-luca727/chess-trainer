@@ -4,13 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const AddStudy = () => {
   const navigate = useNavigate();
-  const [hidden, setHidden] = useState(true);
-  const [required, setRequired] = useState(false);
 
-  const onPrivate = () => {
-    setHidden((prev) => !prev);
-    setRequired((prev) => !prev);
-  };
   const onFinish = (values: any) => {
     navigate("fens", { state: values });
   };
@@ -55,20 +49,18 @@ const AddStudy = () => {
       >
         <Input placeholder="Type your name" />
       </Form.Item>
-      <Checkbox onChange={onPrivate}>Private Study</Checkbox>
-      (Tip: To change or delete this study make it private.)
+
       <Form.Item
         name="password"
         label="Password"
-        hidden={hidden}
         rules={[
           {
-            required: required,
+            required: true,
           },
           { min: 6 },
           {
             validator: (_, value) =>
-              value || !required
+              value
                 ? Promise.resolve()
                 : Promise.reject("Password does not match criteria."),
           },
@@ -80,11 +72,10 @@ const AddStudy = () => {
       <Form.Item
         name="confirmPassword"
         label="Confirm Password"
-        hidden={hidden}
         dependencies={["password"]}
         rules={[
           {
-            required: required,
+            required: true,
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
@@ -131,6 +122,3 @@ const AddStudy = () => {
 };
 
 export default AddStudy;
-function state(arg0: string, state: any, values: any) {
-  throw new Error("Function not implemented.");
-}

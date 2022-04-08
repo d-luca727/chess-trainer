@@ -1,17 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getFens,
+  getStudy,
   getFenId,
-  postFens,
-  putFens,
-  deleteFens,
+  postStudy,
+  putStudy,
+  deleteStudy,
+  deleteFen,
+  updateFen,
 } = require("../controllers/fens");
 
-router.route("/").get(getFens);
-router.route("/").post(postFens);
-router.route("/").put(putFens);
-router.route("/").delete(deleteFens);
+router.route("/").get(getStudy);
+router.route("/").post(postStudy);
+router.route("/").put(putStudy);
+router.route("/").delete(deleteStudy);
+
+router.route("/:fenId").put(deleteFen);
+router.route("/:fenId").put(updateFen);
 
 router.route("/:fenId").get(getFenId);
 

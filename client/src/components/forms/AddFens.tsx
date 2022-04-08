@@ -49,17 +49,15 @@ const AddFens = () => {
       collection_name: state.collectionName,
       by: state.by,
       fens: positions,
+      private: state.password,
     };
-    if (state.password !== undefined) {
-      data.private = state.password;
-    }
 
     const post = async () => {
       try {
         await axios.post("/api/fens", data).then((res) => {
           const id = res.data.data.id;
 
-          navigate(id);
+          navigate(`${id}`, { state: { id: id, password: state.password } });
         });
       } catch (error) {
         console.log(error);
@@ -76,21 +74,7 @@ const AddFens = () => {
       <h2>Author Name: {state.by}</h2>
 
       <Chessground config={{ fen: fen }} />
-      {/* <label>Insert Fen:</label>
-      <input
-        type="text"
-        value={fen}
-        onChange={(e) => setFen(e.target.value)}
-      ></input>
-      <button
-        onClick={() =>
-          setConfig(() => {
-            return { fen: fen };
-          })
-        }
-      >
-        Insert
-      </button> */}
+
       <Form
         autoComplete="off"
         labelCol={{ span: 10 }}

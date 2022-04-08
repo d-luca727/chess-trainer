@@ -4,3 +4,8 @@ export interface LocationState {
   password: string | undefined;
   confirmPassword: string | undefined;
 }
+
+export interface editLocationState {
+  id: string;
+  password: string | undefined;
+}

@@ -16,6 +16,7 @@ const FenSchema = new mongoose.Schema({
   },
   private: {
     type: String,
+    required: true,
     minlength: 6,
   },
 

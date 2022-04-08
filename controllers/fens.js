@@ -1,7 +1,7 @@
 const Fen = require("../models/Fen");
 const ErrorResponse = require("../utils/ErrorRes.js");
 
-exports.getFens = async (req, res, next) => {
+exports.getStudy = async (req, res, next) => {
   let { amount } = req.query;
   if (amount === undefined || amount > 500) amount = 100;
   try {
@@ -23,7 +23,8 @@ exports.getFenId = async (req, res, next) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-exports.postFens = async (req, res, next) => {
+
+exports.postStudy = async (req, res, next) => {
   const { collection_name, private, fens } = req.body;
   let { by } = req.body;
   if (!collection_name)
@@ -52,7 +53,7 @@ exports.postFens = async (req, res, next) => {
   }
 };
 
-exports.putFens = async (req, res, next) => {
+exports.putStudy = async (req, res, next) => {
   const { _id, fens, collection_name, private } = req.body;
   if (private === undefined)
     return new ErrorResponse("Provide a valid password.", 400);
@@ -71,7 +72,7 @@ exports.putFens = async (req, res, next) => {
   }
 };
 
-exports.deleteFens = async (req, res, next) => {
+exports.deleteStudy = async (req, res, next) => {
   const { _id, private } = req.body;
   if (!private) return new ErrorResponse("Provide a valid password.", 400);
 
@@ -82,6 +83,56 @@ exports.deleteFens = async (req, res, next) => {
 
     if (isMatch) await Fen.findByIdAndDelete(_id);
     else return new ErrorResponse("Password is not correct", 400);
+
+    res.status(201).json({ success: true, data: "success" });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+exports.deleteFen = async (req, res, next) => {
+  const { private } = req.body;
+  const _id = req.params.fenId;
+  const { index } = req.body;
+  if (private === undefined)
+    return new ErrorResponse("Provide a valid password.", 400);
+
+  try {
+    let doc = await Fen.findById(_id);
+
+    const isMatch = await doc.matchPasswords(private);
+    doc.fens.splice(index, 1);
+
+    if (isMatch) await doc.save();
+    else return new ErrorResponse("Provide a valid password.", 400);
+
+    res.status(201).json({ success: true, data: "success" });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+exports.updateFen = async (req, res, next) => {
+  const { private, fen, san, description } = req.body;
+  const _id = req.params.fenId;
+  const { index } = req.body;
+  if (private === undefined)
+    return new ErrorResponse("Provide a valid password.", 400);
+
+  try {
+    let doc = await Fen.findById(_id);
+
+    const isMatch = await doc.matchPasswords(private);
+    let fenToChange = doc.fens.slice(index, index + 1);
+
+    fenToChange.fen = fen;
+    fenToChange.san = san;
+    fenToChange.description = description;
+
+    doc.fens.splice(index, 0, fenToChange);
+
+    if (isMatch) await doc.save();
+    else return new ErrorResponse("Provide a valid password.", 400);
 
     res.status(201).json({ success: true, data: "success" });
   } catch (error) {
