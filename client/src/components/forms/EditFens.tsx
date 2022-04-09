@@ -1,3 +1,7 @@
+//todo: validator for fens and move (from AddFens)
+
+//sync fen's board with fen's FormInput field
+
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
@@ -7,8 +11,6 @@ import Chessground from "@react-chess/chessground";
 import ProForm, {
   ModalForm,
   ProFormText,
-  ProFormDateRangePicker,
-  ProFormSelect,
   ProFormTextArea,
 } from "@ant-design/pro-form";
 import { Card, Row, Col, Button, message } from "antd";
@@ -19,8 +21,10 @@ const EditFens = () => {
   const location = useLocation();
   const { id, password } = location.state as editLocationState; // Type Casting, then you can get the params passed via router
   const [fens, setFens] = useState<any>([]);
+  const [index, setIndex] = useState<any>();
   console.log(id, password);
 
+  //fetching initial fens
   useEffect(() => {
     const fetch = async () => {
       const config = {
@@ -40,12 +44,13 @@ const EditFens = () => {
     fetch();
   }, []);
 
+  //on delete
   const onDeleteFen = (index: number) => {
     const deleteFen = async () => {
       try {
         await axios.put(`/api/fens/${id}`, index).then((res) => {
           setFens(() => {
-            return fens.slice(index, 1);
+            return fens.splice(index, 1);
           });
           console.log("success!");
         });
@@ -56,15 +61,23 @@ const EditFens = () => {
 
     deleteFen();
   };
-  const onEditFen = (index: number) => {
+
+  //on edit modal
+  const onEditFen = (values: any) => {
+    console.log(values);
     const editFen = async () => {
       try {
-        await axios.put(`/api/fens/${id}`, index).then((res) => {
-          setFens(() => {
-            return fens.slice(index, 1);
+        await axios
+          .put(`/api/fens/edit/${id}`, {
+            private: password,
+            san: values.san,
+            fen: values.fen,
+            description: values.description,
+            index: index,
+          })
+          .then((res) => {
+            setFens(res.data.data);
           });
-          console.log("success!");
-        });
       } catch (error) {
         console.log(error);
       }
@@ -112,12 +125,17 @@ const EditFens = () => {
                   company: string;
                 }>
                   title="Edit Position"
-                  trigger={<Button type="primary">Edit</Button>}
+                  trigger={
+                    <Button type="primary" onClick={() => setIndex(index)}>
+                      Edit
+                    </Button>
+                  }
                   autoFocusFirstInput
                   modalProps={{
                     onCancel: () => console.log("run"),
                   }}
                   onFinish={async (values) => {
+                    onEditFen(values);
                     console.log(values.name);
                     message.success("提交成功");
                     return true;
@@ -137,7 +155,8 @@ const EditFens = () => {
                       width="xl"
                       name="description"
                       label="Description"
-                      placeholder="请输入名称"
+                      tooltip="最长为 24 位"
+                      placeholder="Description"
                     />
                     <Chessground
                       width={400}

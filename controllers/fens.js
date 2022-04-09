@@ -6,7 +6,7 @@ exports.getStudy = async (req, res, next) => {
   if (amount === undefined || amount > 500) amount = 100;
   try {
     let data = await Fen.find().limit(amount);
-    console.log(amount);
+
     res.status(200).json({ success: true, data: data });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -123,18 +123,15 @@ exports.updateFen = async (req, res, next) => {
     let doc = await Fen.findById(_id);
 
     const isMatch = await doc.matchPasswords(private);
-    let fenToChange = doc.fens.slice(index, index + 1);
 
-    fenToChange.fen = fen;
-    fenToChange.san = san;
-    fenToChange.description = description;
+    let fens = doc.fens;
+    fens.splice(index, 1, { fen, san, description });
 
-    doc.fens.splice(index, 0, fenToChange);
+    if (isMatch) {
+      await Fen.findByIdAndUpdate(_id, { fens });
+    } else return new ErrorResponse("Password is not correct", 400);
 
-    if (isMatch) await doc.save();
-    else return new ErrorResponse("Provide a valid password.", 400);
-
-    res.status(201).json({ success: true, data: "success" });
+    res.status(201).json({ success: true, data: fens });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
