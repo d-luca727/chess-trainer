@@ -37,6 +37,7 @@ const AddStudy = () => {
       <Form.Item
         name="by"
         label="Author"
+        tooltip="If you leave it blank it will be named 'Anonymous' "
         rules={[
           {
             required: false,

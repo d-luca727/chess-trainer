@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import NavBar from "./components/NavBar";
-import styled from "styled-components";
+import NavBar from "./components/navbar/NavBar";
 
 import Collections from "./components/Collections";
 
@@ -21,8 +20,12 @@ function App() {
   return (
     <>
       <NavBar />
-
-      <Styles.Wrapper>
+      <div
+      /*  style={{
+          backgroundColor: "#eeeeee",
+          height: "100vh",
+        }} */
+      >
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/play" element={<Collections />} />
@@ -35,16 +38,9 @@ function App() {
           <Route path="/study/:fenId" element={<StudyId />} />
           <Route path="/study/:fenId/play" element={<Play />} />
         </Routes>
-      </Styles.Wrapper>
+      </div>
     </>
   );
 }
 
-const Styles = {
-  Wrapper: styled.main`
-    display: flex;
-    background-color: #eeeeee;
-    height: 100vh;
-  `,
-};
 export default App;

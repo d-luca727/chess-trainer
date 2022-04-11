@@ -88,6 +88,7 @@ const AddFens = () => {
         <Form.Item
           name="fen"
           label="Fen"
+          tooltip="add a valid position in Forsyth-Edwards Notation"
           initialValue={
             "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
           }
@@ -118,6 +119,7 @@ const AddFens = () => {
         <Form.Item
           name="description"
           label="Description"
+          tooltip="add a description to understand the position better. It would be a good idea keeping it brief and simple."
           rules={[
             {
               required: false,
@@ -131,6 +133,7 @@ const AddFens = () => {
         <Form.Item
           name="san"
           label="Answer in san"
+          tooltip="the berst move for the position."
           dependencies={["fen"]}
           rules={[
             {

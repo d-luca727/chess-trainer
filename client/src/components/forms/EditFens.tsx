@@ -155,7 +155,7 @@ const EditFens = () => {
         onFinish={async (values) => {
           onAddFen(values);
           console.log(values.name);
-          message.success("提交成功");
+          message.success("Position edited successfully");
           return true;
         }}
       >
@@ -164,7 +164,7 @@ const EditFens = () => {
             width="md"
             name="fen"
             label="Fen's Position"
-            tooltip="最长为 24 位"
+            tooltip="add a valid position in Forsyth-Edwards Notation"
             placeholder="fen"
             initialValue={
               "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
@@ -176,13 +176,13 @@ const EditFens = () => {
             width="xl"
             name="description"
             label="Description"
-            tooltip="最长为 24 位"
+            tooltip="add a description to understand the position better. It would be a good idea keeping it brief and simple."
             placeholder="Description"
           />
           <Chessground
             width={400}
             height={400}
-            config={{ coordinates: false }}
+            config={{ coordinates: false, viewOnly: true }}
           />
         </ProForm.Group>
         <ProForm.Group>
@@ -190,7 +190,7 @@ const EditFens = () => {
             width="md"
             name="san"
             label="Correct Move"
-            tooltip="最长为 24 位"
+            tooltip="the berst move for the position."
             placeholder="san"
           />
         </ProForm.Group>
@@ -212,7 +212,11 @@ const EditFens = () => {
                   <Chessground
                     height={boardWidth}
                     width={boardWidth}
-                    config={{ fen: fen?.fen, coordinates: false }}
+                    config={{
+                      fen: fen?.fen,
+                      coordinates: false,
+                      viewOnly: true,
+                    }}
                   />
                 </p>
                 <p>
@@ -241,8 +245,8 @@ const EditFens = () => {
                   }}
                   onFinish={async (values) => {
                     onEditFen(values);
-                    console.log(values.name);
-                    message.success("提交成功");
+
+                    message.success("Position edited successfully");
                     return true;
                   }}
                 >
@@ -251,7 +255,7 @@ const EditFens = () => {
                       width="md"
                       name="fen"
                       label="Fen's Position"
-                      tooltip="最长为 24 位"
+                      tooltip="add a valid position in Forsyth-Edwards Notation"
                       placeholder="fen"
                       initialValue={fen.fen}
                     />
@@ -261,14 +265,14 @@ const EditFens = () => {
                       width="xl"
                       name="description"
                       label="Description"
-                      tooltip="最长为 24 位"
+                      tooltip="add a description to understand the position better. It would be a good idea keeping it brief and simple."
                       placeholder="Description"
                       initialValue={fen.description}
                     />
                     <Chessground
                       width={400}
                       height={400}
-                      config={{ coordinates: false }}
+                      config={{ coordinates: false, viewOnly: true }}
                     />
                   </ProForm.Group>
                   <ProForm.Group>
@@ -276,7 +280,7 @@ const EditFens = () => {
                       width="md"
                       name="san"
                       label="Correct Move"
-                      tooltip="最长为 24 位"
+                      tooltip="the berst move for the position."
                       placeholder="san"
                       initialValue={fen.san}
                     />
