@@ -8,15 +8,19 @@ const {
   deleteStudy,
   deleteFen,
   updateFen,
+  addFen,
 } = require("../controllers/fens");
 
 router.route("/").get(getStudy);
 router.route("/").post(postStudy);
 router.route("/").put(putStudy);
-router.route("/").delete(deleteStudy);
 
-router.route("/:fenId").put(deleteFen);
-router.route("/edit/:fenId").put(updateFen);
+router.route("/delete/:_id").put(deleteStudy);
+
 router.route("/:fenId").get(getFenId);
+router.route("/:fenId").put(deleteFen);
+
+router.route("/edit/:fenId").put(updateFen);
+router.route("/edit/fen/:fenId").put(addFen);
 
 module.exports = router;

@@ -3,7 +3,7 @@
 //sync fen's board with fen's FormInput field
 
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { editLocationState } from "../../types";
 import Chessground from "@react-chess/chessground";
@@ -13,11 +13,12 @@ import ProForm, {
   ProFormText,
   ProFormTextArea,
 } from "@ant-design/pro-form";
-import { Card, Row, Col, Button, message } from "antd";
+import { Card, Row, Col, Button, message, Popconfirm } from "antd";
 
 const boardWidth = 150;
 
 const EditFens = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const { id, password } = location.state as editLocationState; // Type Casting, then you can get the params passed via router
   const [fens, setFens] = useState<any>([]);
@@ -47,15 +48,19 @@ const EditFens = () => {
   //on delete
   const onDeleteFen = (index: number) => {
     const deleteFen = async () => {
+      console.log("ciao");
       try {
-        await axios.put(`/api/fens/${id}`, index).then((res) => {
-          setFens(() => {
-            return fens.splice(index, 1);
+        await axios
+          .put(`/api/fens/${id}`, { index: index, private: password })
+          .then((res) => {
+            setFens(() => {
+              return fens.splice(index, 1);
+            });
+            console.log("success!");
           });
-          console.log("success!");
-        });
       } catch (error) {
         console.log(error);
+        //todo: add error handling for when there is a problem like SetError
       }
     };
 
@@ -86,10 +91,110 @@ const EditFens = () => {
     editFen();
   };
 
+  //on add modal
+  const onAddFen = (values: any) => {
+    console.log(values);
+    const editFen = async () => {
+      try {
+        await axios
+          .put(`/api/fens/edit/fen/${id}`, {
+            private: password,
+            san: values.san,
+            fen: values.fen,
+            description: values.description,
+          })
+          .then((res) => {
+            setFens(res.data.data);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    editFen();
+  };
+
+  //on submit
+  const onSubmitStudy = () => {
+    navigate(`/study/${id}`);
+  };
+  //ondiscard
+  const onDiscardStudy = () => {
+    console.log("helo");
+    const deleteStudy = async () => {
+      try {
+        await axios
+          .put(`/api/fens/delete/${id}`, {
+            private: password,
+          })
+          .then((res) => {
+            navigate("/play");
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    deleteStudy();
+  };
+
   /* if (fens.length === 0) return <h1>Loading...</h1>; */
   return (
     <>
       <h1>Review your study</h1>
+      <ModalForm<{
+        name: string;
+        company: string;
+      }>
+        title="Add Position"
+        trigger={<Button type="primary">Add Position</Button>}
+        autoFocusFirstInput
+        modalProps={{
+          onCancel: () => console.log("run"),
+        }}
+        onFinish={async (values) => {
+          onAddFen(values);
+          console.log(values.name);
+          message.success("提交成功");
+          return true;
+        }}
+      >
+        <ProForm.Group>
+          <ProFormText
+            width="md"
+            name="fen"
+            label="Fen's Position"
+            tooltip="最长为 24 位"
+            placeholder="fen"
+            initialValue={
+              "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+            }
+          />
+        </ProForm.Group>
+        <ProForm.Group>
+          <ProFormTextArea
+            width="xl"
+            name="description"
+            label="Description"
+            tooltip="最长为 24 位"
+            placeholder="Description"
+          />
+          <Chessground
+            width={400}
+            height={400}
+            config={{ coordinates: false }}
+          />
+        </ProForm.Group>
+        <ProForm.Group>
+          <ProFormText
+            width="md"
+            name="san"
+            label="Correct Move"
+            tooltip="最长为 24 位"
+            placeholder="san"
+          />
+        </ProForm.Group>
+      </ModalForm>
       <Row gutter={[24, 24]}>
         {fens?.map(
           (
@@ -148,6 +253,7 @@ const EditFens = () => {
                       label="Fen's Position"
                       tooltip="最长为 24 位"
                       placeholder="fen"
+                      initialValue={fen.fen}
                     />
                   </ProForm.Group>
                   <ProForm.Group>
@@ -157,6 +263,7 @@ const EditFens = () => {
                       label="Description"
                       tooltip="最长为 24 位"
                       placeholder="Description"
+                      initialValue={fen.description}
                     />
                     <Chessground
                       width={400}
@@ -171,6 +278,7 @@ const EditFens = () => {
                       label="Correct Move"
                       tooltip="最长为 24 位"
                       placeholder="san"
+                      initialValue={fen.san}
                     />
                   </ProForm.Group>
                 </ModalForm>
@@ -179,6 +287,20 @@ const EditFens = () => {
           )
         )}
       </Row>
+
+      <Popconfirm
+        title="Are you sure you want to submit this study?"
+        onConfirm={onSubmitStudy}
+      >
+        <Button type="primary">Submit Study</Button>
+      </Popconfirm>
+
+      <Popconfirm
+        title="Are you sure you want to discard all the changes?"
+        onConfirm={() => onDiscardStudy()}
+      >
+        <Button danger>Discard Changes</Button>
+      </Popconfirm>
     </>
   );
 };
