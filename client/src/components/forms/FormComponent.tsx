@@ -1,86 +1,105 @@
-import { LocationState } from "../../types";
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Typography, Form, Input, Button } from "antd";
+import React, { useState } from "react";
 import Chessground from "@react-chess/chessground";
-
+import { Button, Form, Input, message } from "antd";
 import axios from "axios";
-
-import { toColor, toDests } from "../../utils/chessUtils";
-import { Config } from "@react-chess/chessground/node_modules/chessground/config";
 import { ChessInstance } from "chess.js";
 const Chessjs = require("chess.js");
 
-const { Title } = Typography;
+interface PropsInterface {
+  fen: string;
+  setFen(arg: any): void;
+  san: string;
+  setFens(arg: any): void;
+  password: string | undefined;
+  id: string;
+  type: "add" | "edit";
+  index: number;
+  setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const AddFens = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const state = location.state as LocationState; // Type Casting, then you can get the params passed via router
-
-  const [chessConfig, setChessConfig] = useState<Partial<Config> | undefined>();
+const FormComponent = (props: PropsInterface) => {
+  //validate move
+  const {
+    fen,
+    setFens,
+    setFen,
+    password,
+    id,
+    san,
+    type,
+    index,
+    setIsModalVisible,
+  } = props;
   const [chess] = useState<ChessInstance>(
     new Chessjs("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   );
 
-  const [fen, setFen] = useState(
-    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-  );
-  const [positions, setPositions] = useState<any>([]);
-
-  //validate move
   const validateMove = (value: string) => {
     chess.load(fen);
     let _chess = chess;
     return _chess.move(value) !== null;
   };
 
-  const onAdd = (values: any) => {
-    setPositions((prev: any) => {
-      if (values.description === undefined) {
-        values.description = "";
-      }
-      return [...prev, values];
-    });
-  };
-
-  const onSubmit = (values: any) => {
-    //post request
-    let data: any = {
-      collection_name: state.collectionName,
-      by: state.by,
-      fens: positions,
-      private: state.password,
-    };
-
-    const post = async () => {
+  //on edit modal
+  const onEditFen = (values: any) => {
+    const editFen = async () => {
       try {
-        await axios.post("/api/fens", data).then((res) => {
-          const id = res.data.data.id;
-
-          navigate(`${id}`, { state: { id: id, password: state.password } });
-        });
+        await axios
+          .put(`/api/fens/edit/${id}`, {
+            private: password,
+            san: values.san,
+            fen: values.fen,
+            description: values.description,
+            index: index,
+          })
+          .then((res) => {
+            setFens(res.data.data);
+          });
       } catch (error) {
         console.log(error);
       }
     };
 
-    post();
+    editFen();
   };
+  //on Add
+  const onAddFen = (values: any) => {
+    console.log(values);
+    const editFen = async () => {
+      try {
+        await axios
+          .put(`/api/fens/edit/fen/${id}`, {
+            private: password,
+            san: values.san,
+            fen: values.fen,
+            description: values.description,
+          })
+          .then((res) => {
+            setFens(res.data.data);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
+    editFen();
+  };
   return (
-    <>
-      <h1>Study Name: {state.collectionName}</h1>
-      <br />
-      <h2>Author Name: {state.by}</h2>
-
-      <Chessground config={{ fen: fen }} />
-
+    <div>
       <Form
         autoComplete="off"
         labelCol={{ span: 10 }}
         wrapperCol={{ span: 14 }}
-        onFinish={(values) => onAdd(values)}
+        onFinish={(values) => {
+          if (type === "add") {
+            onAddFen(values);
+            message.success(`Position added successfully`);
+          } else {
+            onEditFen(values);
+            message.success(`Position edited successfully`);
+          }
+          setIsModalVisible(false);
+        }}
         onFinishFailed={(error) => {
           console.log({ error });
           console.log(error);
@@ -90,9 +109,7 @@ const AddFens = () => {
           name="fen"
           label="Fen"
           tooltip="add a valid position in Forsyth-Edwards Notation"
-          initialValue={
-            "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-          }
+          initialValue={fen}
           rules={[
             {
               required: true,
@@ -134,8 +151,9 @@ const AddFens = () => {
         <Form.Item
           name="san"
           label="Answer in san"
-          tooltip="the berst move for the position."
+          tooltip="the best move for the position."
           dependencies={["fen"]}
+          initialValue={san}
           rules={[
             {
               required: true,
@@ -153,28 +171,23 @@ const AddFens = () => {
         >
           <Input placeholder="Type the right move in san notation" />
         </Form.Item>
+        <Chessground
+          width={400}
+          height={400}
+          config={{ coordinates: false, viewOnly: true }}
+        />
+        <br />
+        <br />
+
         <Form.Item wrapperCol={{ span: 24 }}>
           <Button block type="primary" htmlType="submit">
-            Add Position
+            {/* {type === "add" ? "Add" : "Edit"} Position */}
+            Save Position
           </Button>
         </Form.Item>
       </Form>
-      <div>
-        {positions.map((position: any, index: number) => (
-          <div key={index}>
-            <p>Fen: {position.fen}</p>
-            <p>Description: {position.description}</p>
-            <p>Answer: {position.san}</p>
-            <br />
-            <br />
-          </div>
-        ))}
-        {positions.length > 0 && (
-          <Button onClick={onSubmit}>Submit your Study</Button>
-        )}
-      </div>
-    </>
+    </div>
   );
 };
 
-export default AddFens;
+export default FormComponent;

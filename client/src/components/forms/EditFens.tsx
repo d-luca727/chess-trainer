@@ -13,7 +13,10 @@ import ProForm, {
   ProFormText,
   ProFormTextArea,
 } from "@ant-design/pro-form";
-import { Card, Row, Col, Button, message, Popconfirm } from "antd";
+import { Card, Row, Col, Button, message, Popconfirm, Modal } from "antd";
+import FormComponent from "./FormComponent";
+import { ChessInstance } from "chess.js";
+const Chessjs = require("chess.js");
 
 const boardWidth = 150;
 
@@ -21,9 +24,20 @@ const EditFens = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id, password } = location.state as editLocationState; // Type Casting, then you can get the params passed via router
-  const [fens, setFens] = useState<any>([]);
+
   const [index, setIndex] = useState<any>();
   console.log(id, password);
+
+  //chess form things
+  const [chess] = useState<ChessInstance>(
+    new Chessjs("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+  );
+  const [_fen, setFen] = useState("");
+  const [fens, setFens] = useState<any>([]);
+
+  //prove
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
   //fetching initial fens
   useEffect(() => {
@@ -67,53 +81,6 @@ const EditFens = () => {
     deleteFen();
   };
 
-  //on edit modal
-  const onEditFen = (values: any) => {
-    console.log(values);
-    const editFen = async () => {
-      try {
-        await axios
-          .put(`/api/fens/edit/${id}`, {
-            private: password,
-            san: values.san,
-            fen: values.fen,
-            description: values.description,
-            index: index,
-          })
-          .then((res) => {
-            setFens(res.data.data);
-          });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    editFen();
-  };
-
-  //on add modal
-  const onAddFen = (values: any) => {
-    console.log(values);
-    const editFen = async () => {
-      try {
-        await axios
-          .put(`/api/fens/edit/fen/${id}`, {
-            private: password,
-            san: values.san,
-            fen: values.fen,
-            description: values.description,
-          })
-          .then((res) => {
-            setFens(res.data.data);
-          });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    editFen();
-  };
-
   //on submit
   const onSubmitStudy = () => {
     navigate(`/study/${id}`);
@@ -142,59 +109,35 @@ const EditFens = () => {
   return (
     <>
       <h1>Review your study</h1>
-      <ModalForm<{
-        name: string;
-        company: string;
-      }>
-        title="Add Position"
-        trigger={<Button type="primary">Add Position</Button>}
-        autoFocusFirstInput
-        modalProps={{
-          onCancel: () => console.log("run"),
-        }}
-        onFinish={async (values) => {
-          onAddFen(values);
-          console.log(values.name);
-          message.success("Position edited successfully");
-          return true;
+      <Button
+        type="primary"
+        onClick={() => {
+          setIsModalVisible(true);
+          setIndex(index);
         }}
       >
-        <ProForm.Group>
-          <ProFormText
-            width="md"
-            name="fen"
-            label="Fen's Position"
-            tooltip="add a valid position in Forsyth-Edwards Notation"
-            placeholder="fen"
-            initialValue={
-              "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-            }
-          />
-        </ProForm.Group>
-        <ProForm.Group>
-          <ProFormTextArea
-            width="xl"
-            name="description"
-            label="Description"
-            tooltip="add a description to understand the position better. It would be a good idea keeping it brief and simple."
-            placeholder="Description"
-          />
-          <Chessground
-            width={400}
-            height={400}
-            config={{ coordinates: false, viewOnly: true }}
-          />
-        </ProForm.Group>
-        <ProForm.Group>
-          <ProFormText
-            width="md"
-            name="san"
-            label="Correct Move"
-            tooltip="the berst move for the position."
-            placeholder="san"
-          />
-        </ProForm.Group>
-      </ModalForm>
+        Add Position
+      </Button>
+      <Modal
+        title="Add Position"
+        visible={isModalVisible}
+        onOk={() => setIsModalVisible(false)}
+        onCancel={() => setIsModalVisible(false)}
+      >
+        {/* formcomponent */}
+        <FormComponent
+          index={index}
+          fen={"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}
+          san={""}
+          setFen={setFen}
+          setFens={setFens}
+          password={password}
+          id={id}
+          type={"add"}
+          setIsModalVisible={setIsModalVisible}
+        />
+      </Modal>
+
       <Row gutter={[24, 24]}>
         {fens?.map(
           (
@@ -228,64 +171,35 @@ const EditFens = () => {
                   {fen.san}
                 </p>
                 <Button onClick={() => onDeleteFen(index)}>Delete</Button>
-                {/* edit modal */}
-                <ModalForm<{
-                  name: string;
-                  company: string;
-                }>
-                  title="Edit Position"
-                  trigger={
-                    <Button type="primary" onClick={() => setIndex(index)}>
-                      Edit
-                    </Button>
-                  }
-                  autoFocusFirstInput
-                  modalProps={{
-                    onCancel: () => console.log("run"),
-                  }}
-                  onFinish={async (values) => {
-                    onEditFen(values);
 
-                    message.success("Position edited successfully");
-                    return true;
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setIsEditModalVisible(true);
+                    setIndex(index);
                   }}
                 >
-                  <ProForm.Group>
-                    <ProFormText
-                      width="md"
-                      name="fen"
-                      label="Fen's Position"
-                      tooltip="add a valid position in Forsyth-Edwards Notation"
-                      placeholder="fen"
-                      initialValue={fen.fen}
-                    />
-                  </ProForm.Group>
-                  <ProForm.Group>
-                    <ProFormTextArea
-                      width="xl"
-                      name="description"
-                      label="Description"
-                      tooltip="add a description to understand the position better. It would be a good idea keeping it brief and simple."
-                      placeholder="Description"
-                      initialValue={fen.description}
-                    />
-                    <Chessground
-                      width={400}
-                      height={400}
-                      config={{ coordinates: false, viewOnly: true }}
-                    />
-                  </ProForm.Group>
-                  <ProForm.Group>
-                    <ProFormText
-                      width="md"
-                      name="san"
-                      label="Correct Move"
-                      tooltip="the berst move for the position."
-                      placeholder="san"
-                      initialValue={fen.san}
-                    />
-                  </ProForm.Group>
-                </ModalForm>
+                  Edit Position
+                </Button>
+                <Modal
+                  title="Edit Position"
+                  visible={isEditModalVisible}
+                  onOk={() => setIsEditModalVisible(false)}
+                  onCancel={() => setIsEditModalVisible(false)}
+                >
+                  {/* formcomponent */}
+                  <FormComponent
+                    index={index}
+                    fen={fen.fen}
+                    san={fen.san}
+                    setFen={setFen}
+                    setFens={setFens}
+                    password={password}
+                    id={id}
+                    type={"edit"}
+                    setIsModalVisible={setIsEditModalVisible}
+                  />
+                </Modal>
               </Card>
             </Col>
           )
@@ -303,7 +217,7 @@ const EditFens = () => {
         title="Are you sure you want to discard all the changes?"
         onConfirm={() => onDiscardStudy()}
       >
-        <Button danger>Discard Changes</Button>
+        <Button danger>Discard Study</Button>
       </Popconfirm>
     </>
   );
