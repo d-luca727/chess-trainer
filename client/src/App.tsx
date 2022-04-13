@@ -8,12 +8,9 @@ import AddFens from "./components/forms/AddFens";
 import EditFens from "./components/forms/EditFens";
 import StudyId from "./components/study/StudyId";
 import Play from "./components/study/Play";
+import About from "./components/About";
 function Index() {
   return <h2>prova</h2>;
-}
-
-function About() {
-  return <h2>about me</h2>;
 }
 
 function App() {
