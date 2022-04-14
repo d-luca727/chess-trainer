@@ -8,11 +8,6 @@ import axios from "axios";
 import { editLocationState } from "../../types";
 import Chessground from "@react-chess/chessground";
 
-import ProForm, {
-  ModalForm,
-  ProFormText,
-  ProFormTextArea,
-} from "@ant-design/pro-form";
 import { Card, Row, Col, Button, message, Popconfirm, Modal } from "antd";
 import FormComponent from "./FormComponent";
 import { ChessInstance } from "chess.js";

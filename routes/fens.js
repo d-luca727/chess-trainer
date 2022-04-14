@@ -9,6 +9,7 @@ const {
   deleteFen,
   updateFen,
   addFen,
+  authFenId,
 } = require("../controllers/fens");
 
 router.route("/").get(getStudy);
@@ -16,6 +17,8 @@ router.route("/").post(postStudy);
 router.route("/").put(putStudy);
 
 router.route("/delete/:_id").put(deleteStudy);
+
+router.route("/auth/:fenId").post(authFenId);
 
 router.route("/:fenId").get(getFenId);
 router.route("/:fenId").put(deleteFen);
