@@ -124,7 +124,6 @@ const EditFens = () => {
           index={index}
           fen={"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}
           san={""}
-          setFen={setFen}
           setFens={setFens}
           password={password}
           id={id}
@@ -147,15 +146,20 @@ const EditFens = () => {
             <Col xs={24} sm={12} lg={6} className="fen-card" key={fen._id}>
               <Card>
                 <p>
-                  <Chessground
-                    height={boardWidth}
-                    width={boardWidth}
-                    config={{
-                      fen: fen?.fen,
-                      coordinates: false,
-                      viewOnly: true,
-                    }}
-                  />
+                  <a
+                    href={`https://lichess.org/analysis/${fen.fen}`}
+                    target={"_blank"}
+                  >
+                    <Chessground
+                      height={boardWidth}
+                      width={boardWidth}
+                      config={{
+                        fen: fen?.fen,
+                        coordinates: false,
+                        viewOnly: true,
+                      }}
+                    />
+                  </a>
                 </p>
                 <p>
                   <strong>Description:</strong>
@@ -187,7 +191,6 @@ const EditFens = () => {
                     index={index}
                     fen={fen.fen}
                     san={fen.san}
-                    setFen={setFen}
                     setFens={setFens}
                     password={password}
                     id={id}

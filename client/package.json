@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://127.0.0.1:4000",
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-form": "^1.62.1",
     "@react-chess/chessground": "^1.2.2",
     "@testing-library/jest-dom": "^5.16.2",

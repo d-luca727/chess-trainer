@@ -7,35 +7,28 @@ const Chessjs = require("chess.js");
 
 interface PropsInterface {
   fen: string;
-  setFen(arg: any): void;
+
   san: string;
   setFens(arg: any): void;
   password: string | undefined;
   id: string;
   type: "add" | "edit";
-  index: number;
+  index?: number;
   setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const FormComponent = (props: PropsInterface) => {
   //validate move
-  const {
-    fen,
-    setFens,
-    setFen,
-    password,
-    id,
-    san,
-    type,
-    index,
-    setIsModalVisible,
-  } = props;
+  const { fen, setFens, password, id, san, type, index, setIsModalVisible } =
+    props;
   const [chess] = useState<ChessInstance>(
     new Chessjs("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   );
 
+  const [_fen, setFen] = useState(fen);
+
   const validateMove = (value: string) => {
-    chess.load(fen);
+    chess.load(_fen);
     let _chess = chess;
     return _chess.move(value) !== null;
   };
@@ -109,7 +102,7 @@ const FormComponent = (props: PropsInterface) => {
           name="fen"
           label="Fen"
           tooltip="add a valid position in Forsyth-Edwards Notation"
-          initialValue={fen}
+          initialValue={_fen}
           rules={[
             {
               required: true,
@@ -171,11 +164,13 @@ const FormComponent = (props: PropsInterface) => {
         >
           <Input placeholder="Type the right move in san notation" />
         </Form.Item>
-        <Chessground
-          width={400}
-          height={400}
-          config={{ coordinates: false, viewOnly: true }}
-        />
+        <a href={`https://lichess.org/analysis/${_fen}`} target={"_blank"}>
+          <Chessground
+            width={400}
+            height={400}
+            config={{ fen: _fen, coordinates: false, viewOnly: true }}
+          />
+        </a>
         <br />
         <br />
 

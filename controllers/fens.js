@@ -57,7 +57,7 @@ exports.postStudy = async (req, res, next) => {
 };
 
 exports.putStudy = async (req, res, next) => {
-  const { _id, fens, collection_name, private } = req.body;
+  const { _id, fens, collection_name, private, by } = req.body;
   if (private === undefined)
     return res.status(400).json({ success: false, error: "invalid password" });
 
@@ -66,7 +66,8 @@ exports.putStudy = async (req, res, next) => {
 
     const isMatch = await doc.matchPasswords(private);
 
-    if (isMatch) await Fen.findByIdAndUpdate(_id, { collection_name, fens });
+    if (isMatch)
+      await Fen.findByIdAndUpdate(_id, { collection_name, fens, by });
     else
       return res
         .status(400)
