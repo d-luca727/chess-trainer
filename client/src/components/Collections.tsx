@@ -1,3 +1,5 @@
+//todo: make a complex search (by name,number of positions,etc..)
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Chessground from "@react-chess/chessground";
