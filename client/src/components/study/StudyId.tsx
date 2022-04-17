@@ -10,10 +10,12 @@ import Chessground from "@react-chess/chessground";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { EditOutlined } from "@ant-design/icons";
+import FormComponent from "../forms/FormComponent";
 import {
   Button,
   Card,
+  Checkbox,
   Col,
   Collapse,
   Form,
@@ -21,10 +23,10 @@ import {
   message,
   Modal,
   Row,
+  Typography,
 } from "antd";
 
-import { EditOutlined } from "@ant-design/icons";
-import FormComponent from "../forms/FormComponent";
+const { Title } = Typography;
 
 const { Panel } = Collapse;
 
@@ -171,238 +173,280 @@ const StudyId = () => {
   return (
     <div>
       {/* log in */}
-      {!isLogged && (
-        <>
-          <Button
-            type="primary"
-            onClick={() => {
-              setIsModalVisible(true);
-            }}
-          >
-            Edit Study
-          </Button>
-          <Modal
-            title="Add Position"
-            visible={isModalVisible}
-            onOk={() => setIsModalVisible(false)}
-            onCancel={() => setIsModalVisible(false)}
-          >
-            <Form
-              autoComplete="off"
-              labelCol={{ span: 10 }}
-              wrapperCol={{ span: 14 }}
-              onFinish={onSubmitPassword}
-              onFinishFailed={(error) => {
-                console.log({ error });
-                console.log(error);
-              }}
-            >
-              <Form.Item
-                name="password"
-                label="Enter the study's password."
-                rules={[
-                  {
-                    required: true,
-                  },
-                  { min: 6 },
-                  {
-                    validator: (_, value) =>
-                      value
-                        ? Promise.resolve()
-                        : Promise.reject("Password does not match criteria."),
-                  },
-                ]}
-                hasFeedback
-              >
-                <Input.Password placeholder="Type your password" />
-              </Form.Item>
-
-              <Form.Item wrapperCol={{ span: 24 }}>
-                <Button block type="primary" htmlType="submit">
-                  Authenticate
+      <Row gutter={[16, 16]}>
+        <Col span={4}></Col>
+        <Col span={16}>
+          <div className={"editStudyButton"}>
+            {!isLogged && (
+              <>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setIsModalVisible(true);
+                  }}
+                >
+                  Edit Study
+                  <EditOutlined />
                 </Button>
-              </Form.Item>
-            </Form>
-          </Modal>
-        </>
-      )}
-      <h1>
-        {IsStudyNameClicked ? (
-          <>
-            Study Name:
-            <Input
-              value={studyName}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setStudyName(e.target.value)
-              }
-            ></Input>
-            <Button onClick={editStudyNameHandler}>Edit</Button>
-          </>
-        ) : (
-          <>
-            Study Name: {position.collection_name}{" "}
-            {isLogged && (
-              <Button
-                onClick={() => {
-                  setIsStudyNameClicked(true);
-                  setStudyName(position.collection_name);
-                }}
-              >
-                <EditOutlined />
-              </Button>
+                <Modal
+                  title="Add Position"
+                  visible={isModalVisible}
+                  onOk={() => setIsModalVisible(false)}
+                  onCancel={() => setIsModalVisible(false)}
+                >
+                  <Form
+                    autoComplete="off"
+                    labelCol={{ span: 10 }}
+                    wrapperCol={{ span: 14 }}
+                    onFinish={onSubmitPassword}
+                    onFinishFailed={(error) => {
+                      console.log({ error });
+                      console.log(error);
+                    }}
+                  >
+                    <Form.Item
+                      name="password"
+                      label="Enter the study's password."
+                      rules={[
+                        {
+                          required: true,
+                        },
+                        { min: 6 },
+                        {
+                          validator: (_, value) =>
+                            value
+                              ? Promise.resolve()
+                              : Promise.reject(
+                                  "Password does not match criteria."
+                                ),
+                        },
+                      ]}
+                      hasFeedback
+                    >
+                      <Input.Password placeholder="Type your password" />
+                    </Form.Item>
+
+                    <Form.Item wrapperCol={{ span: 24 }}>
+                      <Button block type="primary" htmlType="submit">
+                        Authenticate
+                      </Button>
+                    </Form.Item>
+                  </Form>
+                </Modal>
+              </>
             )}
-          </>
-        )}
-      </h1>
+          </div>
+          <div className="titleHolder">
+            <h1>
+              {IsStudyNameClicked ? (
+                <>
+                  Study Name:
+                  <Input
+                    value={studyName}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setStudyName(e.target.value)
+                    }
+                  ></Input>
+                  <Button onClick={editStudyNameHandler}>Edit</Button>
+                </>
+              ) : (
+                <>
+                  {position.collection_name}{" "}
+                  {isLogged && (
+                    <Button
+                      onClick={() => {
+                        setIsStudyNameClicked(true);
+                        setStudyName(position.collection_name);
+                      }}
+                    >
+                      <EditOutlined />
+                    </Button>
+                  )}
+                </>
+              )}
+            </h1>
+            <h2>
+              {IsAuthNameClicked ? (
+                <>
+                  by:
+                  <Input
+                    value={authName}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setAuthName(e.target.value)
+                    }
+                  ></Input>
+                  <Button onClick={editAuthorNameHandler}>Edit</Button>
+                </>
+              ) : (
+                <>
+                  by: {position.by}
+                  {isLogged && (
+                    <Button
+                      onClick={() => {
+                        setIsAuthNameClicked(true);
+                        setAuthName(position.by);
+                      }}
+                    >
+                      <EditOutlined />
+                    </Button>
+                  )}
+                </>
+              )}
+            </h2>
+          </div>
+        </Col>
+        <Col span={4}></Col>
+
+        <Col span={4}></Col>
+        <Col span={16}>
+          <div className={"settings-container"}>
+            <h2>Number of positions to study: {fens.length}</h2>
+            <br />
+
+            <label>Hardcore mode?todo</label>
+            <Checkbox />
+            <br />
+
+            <Button type="primary" onClick={onStartGame}>
+              Play
+            </Button>
+          </div>
+        </Col>
+        <Col span={4}></Col>
+      </Row>
+
       <br />
-      <h2>
-        {IsAuthNameClicked ? (
-          <>
-            Author Name:
-            <Input
-              value={authName}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setAuthName(e.target.value)
-              }
-            ></Input>
-            <Button onClick={editAuthorNameHandler}>Edit</Button>
-          </>
-        ) : (
-          <>
-            Author Name: {position.by}
+      <div className={"settings-container"}>
+        <h1>Position inside this study:</h1>
+        <Collapse>
+          <Panel header="" key="1">
             {isLogged && (
-              <Button
-                onClick={() => {
-                  setIsAuthNameClicked(true);
-                  setAuthName(position.by);
-                }}
-              >
-                <EditOutlined />
-              </Button>
+              <>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setIsAddModalVisible(true);
+                  }}
+                >
+                  Add Position
+                </Button>
+                <Modal
+                  title="Add Position"
+                  visible={isAddModalVisible}
+                  onOk={() => setIsAddModalVisible(false)}
+                  onCancel={() => setIsAddModalVisible(false)}
+                >
+                  {/* formcomponent */}
+                  <FormComponent
+                    fen={
+                      "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                    }
+                    san={""}
+                    setFens={setFens}
+                    password={pass}
+                    id={fenId as string}
+                    type={"add"}
+                    setIsModalVisible={setIsAddModalVisible}
+                  />
+                </Modal>
+                <br />
+                <br />
+              </>
             )}
-          </>
-        )}
-      </h2>
-      <h2>Number of positions to study: {fens.length}</h2>
-      <div className="settings">
-        <p>Hardcore mode?(todo)</p>
-        <Button type="primary" onClick={onStartGame}>
-          Play
-        </Button>
-      </div>
-      <h1>Position inside this study:</h1>
-      <Collapse>
-        <Panel header="Positions" key="1">
-          {isLogged && (
-            <>
-              <Button
-                type="primary"
-                onClick={() => {
-                  setIsAddModalVisible(true);
-                }}
-              >
-                Add Position
-              </Button>
-              <Modal
-                title="Add Position"
-                visible={isAddModalVisible}
-                onOk={() => setIsAddModalVisible(false)}
-                onCancel={() => setIsAddModalVisible(false)}
-              >
-                {/* formcomponent */}
-                <FormComponent
-                  fen={
-                    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-                  }
-                  san={""}
-                  setFens={setFens}
-                  password={pass}
-                  id={fenId as string}
-                  type={"add"}
-                  setIsModalVisible={setIsAddModalVisible}
-                />
-              </Modal>
-            </>
-          )}
-          <Row>
-            {fens?.map(
-              (
-                fen: {
-                  _id: string;
-                  fen: string;
-                  description: string;
-                  san: string;
-                },
-                index: number
-              ) => (
-                <Col xs={24} sm={12} lg={6} className="fen-card" key={fen._id}>
-                  <Card>
-                    <p>
-                      <a
-                        href={`https://lichess.org/analysis/${fen.fen}`}
-                        target={"_blank"}
-                      >
-                        <Chessground
-                          height={boardWidth}
-                          width={boardWidth}
-                          config={{
-                            fen: fen?.fen,
-                            coordinates: false,
-                            viewOnly: true,
-                          }}
-                        />
-                      </a>
-                    </p>
-                    <p>
-                      <strong>Description:</strong>
-                      {fen.description}
-                    </p>
-                    <p>
-                      <strong>Correct move:</strong>
-                      {fen.san}
-                    </p>
-                    <p>
-                      {" "}
-                      {isLogged && (
-                        <>
-                          <Button
-                            onClick={() => {
-                              setIsEditPositionModalVisible(true);
-                              setIndex(index);
-                            }}
+            <Row>
+              {fens?.map(
+                (
+                  fen: {
+                    _id: string;
+                    fen: string;
+                    description: string;
+                    san: string;
+                  },
+                  index: number
+                ) => (
+                  <Col
+                    xs={24}
+                    sm={12}
+                    lg={6}
+                    className="fen-card"
+                    key={fen._id}
+                  >
+                    <Card>
+                      <p>
+                        {/*todo: fix this board it is not responsive*/}
+                        <p>
+                          <strong>{fen.fen}</strong>
+                        </p>
+                        <div className="positions-board">
+                          <a
+                            href={`https://lichess.org/analysis/${fen.fen}`}
+                            target={"_blank"}
                           >
-                            <strong>Edit Position</strong> <EditOutlined />
-                          </Button>
-                          <Modal
-                            title="Edit Position"
-                            visible={isEditPositionModalVisible}
-                            onOk={() => setIsEditPositionModalVisible(false)}
-                            onCancel={() =>
-                              setIsEditPositionModalVisible(false)
-                            }
-                          >
-                            {/* formcomponent */}
-                            <FormComponent
-                              index={index}
-                              fen={fen.fen}
-                              san={fen.san}
-                              setFens={setFens}
-                              password={pass}
-                              id={fenId as string}
-                              type={"edit"}
-                              setIsModalVisible={setIsEditPositionModalVisible}
+                            <Chessground
+                              height={boardWidth}
+                              width={boardWidth}
+                              config={{
+                                fen: fen?.fen,
+                                coordinates: false,
+                                viewOnly: true,
+                              }}
                             />
-                          </Modal>
-                        </>
-                      )}
-                    </p>
-                  </Card>
-                </Col>
-              )
-            )}
-          </Row>
-        </Panel>
-      </Collapse>
+                          </a>
+                        </div>
+                      </p>
+                      <p>
+                        <strong>Description:</strong>
+                        {fen.description}
+                      </p>
+                      <p>
+                        <strong>Correct move:</strong>
+                        {fen.san}
+                      </p>
+                      <p>
+                        {" "}
+                        {isLogged && (
+                          <>
+                            <Button
+                              onClick={() => {
+                                setIsEditPositionModalVisible(true);
+                                setIndex(index);
+                              }}
+                            >
+                              <strong>Edit Position</strong> <EditOutlined />
+                            </Button>
+                            <Modal
+                              title="Edit Position"
+                              visible={isEditPositionModalVisible}
+                              onOk={() => setIsEditPositionModalVisible(false)}
+                              onCancel={() =>
+                                setIsEditPositionModalVisible(false)
+                              }
+                            >
+                              {/* formcomponent */}
+                              <FormComponent
+                                index={index}
+                                fen={fen.fen}
+                                san={fen.san}
+                                setFens={setFens}
+                                password={pass}
+                                id={fenId as string}
+                                type={"edit"}
+                                setIsModalVisible={
+                                  setIsEditPositionModalVisible
+                                }
+                              />
+                            </Modal>
+                          </>
+                        )}
+                      </p>
+                    </Card>
+                  </Col>
+                )
+              )}
+            </Row>
+          </Panel>
+        </Collapse>
+      </div>
     </div>
   );
 };

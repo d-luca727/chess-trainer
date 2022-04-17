@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import LeftMenu from "./LeftMenu";
 import RightMenu from "./RightMenu";
-import { Drawer, Button } from "antd";
+import { Drawer } from "antd";
 class Navbar extends Component {
   state = {
     current: "mail",
@@ -21,15 +21,13 @@ class Navbar extends Component {
     return (
       <nav className="menuBar">
         <div className="logo">
-          <a href="">Opening Trainer</a>
+          <a href="/home">Opening Trainer</a>
         </div>
         <div className="menuCon">
           <div className="leftMenu">
             <LeftMenu />
           </div>
-          <div className="rightMenu">
-            <RightMenu />
-          </div>
+          <div className="rightMenu">{/* <RightMenu /> */}</div>
 
           <Drawer
             title="Basic Drawer"
@@ -39,7 +37,7 @@ class Navbar extends Component {
             visible={this.state.visible}
           >
             <LeftMenu />
-            <RightMenu />
+            {/* <RightMenu /> */}
           </Drawer>
         </div>
       </nav>

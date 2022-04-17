@@ -28,13 +28,13 @@ const About = () => {
     <div id="about" className="block aboutBlock">
       <div className="container-fluid">
         <div className="titleHolder">
-          <h2>About Opening Trainer</h2>
+          <Title>About Opening Trainer</Title>
           <p>The best chess training platformm!!</p>
         </div>
         <div className="contentHolder">
           <p>Opening trainer is epic!</p>
         </div>
-        <Title>Features</Title>
+        <Title className={"titleHolder"}>Features</Title>
         <Row gutter={[16, 16]}>
           {items.map((item) => {
             return (
@@ -48,7 +48,7 @@ const About = () => {
             );
           })}
         </Row>
-        <Title>About Us</Title>
+        <Title className={"titleHolder"}>About Us</Title>
         This website is made entirely by Daniele Luca, reach me through github
         or linkedin. --bottone github--bottone linkedin
       </div>

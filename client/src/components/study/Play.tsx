@@ -123,6 +123,9 @@ const Play = () => {
               </button>
               <h2>Description</h2>
               <p>{fens[index].description} sfjwdsbfjhd</p>
+              <a href={`https://lichess.org/analysis/${fens[index].fen}`}>
+                <button>Analyze this position</button>
+              </a>
             </>
           )}
           {!isCorrect && (

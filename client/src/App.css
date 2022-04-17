@@ -137,3 +137,19 @@
     padding: 10px 20px;
   }
 }
+
+.editStudyButton {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.settings-container {
+  text-align: center;
+  position: relative;
+  padding: 0 0 20px;
+  margin: 0 0 40px;
+}
+
+.positions-board {
+  margin-left: 105px;
+}

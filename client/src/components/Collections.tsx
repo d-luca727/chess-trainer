@@ -52,18 +52,30 @@ const Collections = () => {
   if (fens.length === 0) return <>loading...</>;
   return (
     <>
-      <Row gutter={[24, 24]}>
-        <Col span={24}>
+      <br />
+      <Row gutter={[16, 16]}>
+        <Col span={4} />
+        <Col span={16}>
           <Button onClick={() => navigate("/add-study")}>Add a Study</Button>
         </Col>
-        <Search
-          placeholder="Search by Study Name"
-          /* onSearch={onSearch} */
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setSearchTerm(e.target.value)
-          }
-          enterButton
-        />
+        <Col span={4} />
+
+        <Col span={4} />
+        <Col span={16}>
+          <Search
+            placeholder="Search by Study Name"
+            /* onSearch={onSearch} */
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setSearchTerm(e.target.value)
+            }
+            enterButton
+          />
+        </Col>
+        <Col span={4} />
+      </Row>
+      <br />
+      <br />
+      <Row gutter={[24, 24]}>
         {fens
           ?.filter((fen: any) => {
             if (searchTerm == "") return fen;
