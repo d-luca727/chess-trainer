@@ -1,3 +1,5 @@
+@import "~antd/dist/antd.css";
+
 .fens-card-container {
   min-height: 65vh !important;
 }
@@ -7,8 +9,6 @@
 .fen-card {
   width: 35px;
 }
-
-@import "~antd/dist/antd.css";
 
 .menuBar {
   padding: 0 20px;
@@ -148,6 +148,11 @@
   position: relative;
   padding: 0 0 20px;
   margin: 0 0 40px;
+}
+
+.studyTitle {
+  text-align: center;
+  position: relative;
 }
 
 .positions-board {

@@ -31,7 +31,8 @@ const Collections = () => {
 
     fetch();
   }, []);
-  /* const onDeleteStudy = (id:String) =>{
+  /* 
+    const onDeleteStudy = (id:String) =>{
     const deleteStudy = async () => {
       const config = {
         headers: {

@@ -6,6 +6,7 @@ import { PlayState } from "../../types";
 import Chessground from "@react-chess/chessground";
 import { ChessInstance } from "chess.js";
 import { Config } from "@react-chess/chessground/node_modules/chessground/config";
+import { Col, InputNumber, Row } from "antd";
 const Chessjs = require("chess.js");
 
 const move = require("../../audio/move.mp3");
@@ -23,6 +24,8 @@ const Play = () => {
   const location = useLocation();
   const position = location.state as PlayState; // Type Casting, then you can get the params passed via router
   const { fens } = position;
+
+  const [boardWidth, setBoardWidth] = useState(700);
 
   const [message, setMessage] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
@@ -97,44 +100,72 @@ const Play = () => {
   Howler.volume(1.0);
   return (
     <div>
-      <h1>Study:{position.collection_name}</h1>
-      <h2>by:{position.by}</h2>
-      <br />
-      <br />
-      <br />
+      <Row gutter={[16, 16]}>
+        <Col span={6}>
+          <div>
+            <h1>Study:{position.collection_name}</h1>
+            <h2>by:{position.by}</h2>
+          </div>
+        </Col>
 
-      {!isGameOver ? (
-        <>
-          <h2>
-            Position {index + 1} of {fens.length}
-          </h2>
-          <Chessground config={config} />
-          <span>{message}</span>
-          {isCorrect && (
-            <>
-              <button
-                onClick={() => {
-                  index++;
-                  setIsCorrect(false);
-                  setUpBoard();
-                }}
-              >
-                Next
-              </button>
-              <h2>Description</h2>
-              <p>{fens[index].description} sfjwdsbfjhd</p>
-              <a href={`https://lichess.org/analysis/${fens[index].fen}`}>
-                <button>Analyze this position</button>
-              </a>
-            </>
-          )}
-          {!isCorrect && (
-            <button onClick={solutionHandler}>View Solution</button>
-          )}
-        </>
-      ) : (
-        <h2>Game is over. You studied {fens.length} positions</h2>
-      )}
+        {!isGameOver ? (
+          <>
+            <Col span={12}>
+              <h2>
+                Position {index + 1} of {fens.length}
+              </h2>
+              <InputNumber
+                defaultValue={100}
+                min={50}
+                max={150}
+                formatter={(value) => `${value}%`}
+                /*   parser={(value) => value.replace("%", "")} */
+                onChange={(value) => setBoardWidth(700 + (value - 100) * 3)}
+              />
+              <br />
+
+              <Chessground
+                width={boardWidth}
+                height={boardWidth}
+                config={config}
+              />
+            </Col>
+            <Col span={4}>
+              <span>{message}</span>
+              {isCorrect && (
+                <>
+                  <button
+                    onClick={() => {
+                      index++;
+                      setIsCorrect(false);
+                      setUpBoard();
+                    }}
+                  >
+                    Next
+                  </button>
+                  <h2>Description</h2>
+                  <p>{fens[index].description} sfjwdsbfjhd</p>
+                  <a
+                    href={`https://lichess.org/analysis/${fens[index].fen}`}
+                    target={"_blank"}
+                  >
+                    <button>Analyze this position</button>
+                  </a>
+                </>
+              )}
+              {!isCorrect && (
+                <button onClick={solutionHandler}>View Solution</button>
+              )}
+            </Col>
+          </>
+        ) : (
+          <h2>Game is over. You studied {fens.length} positions</h2>
+        )}
+
+        <Col span={8} />
+        <Col span={8} />
+        <Col span={8} />
+      </Row>
     </div>
   );
 };
