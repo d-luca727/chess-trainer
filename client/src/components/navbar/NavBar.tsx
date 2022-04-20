@@ -2,6 +2,8 @@ import { Component } from "react";
 import LeftMenu from "./LeftMenu";
 import RightMenu from "./RightMenu";
 import { Drawer } from "antd";
+
+const logo = require("../../imgs/logo.jpg");
 class Navbar extends Component {
   state = {
     current: "mail",
@@ -21,8 +23,11 @@ class Navbar extends Component {
     return (
       <nav className="menuBar">
         <div className="logo">
-          <a href="/home">Opening Trainer</a>
+          <a href="/home">
+            <img height={70} width={70} src={logo}></img>
+          </a>
         </div>
+
         <div className="menuCon">
           <div className="leftMenu">
             <LeftMenu />

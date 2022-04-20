@@ -1,5 +1,10 @@
-import React from "react";
-
+import {
+  GithubOutlined,
+  LinkedinOutlined,
+  RadarChartOutlined,
+  RiseOutlined,
+  ShareAltOutlined,
+} from "@ant-design/icons";
 import { Row, Col, Typography } from "antd";
 import "../styles/about.css";
 const { Title, Text } = Typography;
@@ -7,34 +12,38 @@ const About = () => {
   const items = [
     {
       key: "1",
-      icon: <i className="fas fa-chart-pie"></i>,
-      title: "Play and learn",
-      content: "yadayada.",
+      icon: <RiseOutlined />,
+      title: "Play and Learn",
+      content:
+        "Enjoy our game modes for a more interactive learning experience.",
     },
     {
       key: "2",
-      icon: <i className="fas fa-desktop"></i>,
+      icon: <RadarChartOutlined />,
       title: "Create your own study",
-      content: " yafadat",
+      content: "Create, edit and delete your own studies ",
     },
     {
       key: "3",
-      icon: <i className="fas fa-database"></i>,
-      title: "share on lcihess",
-      content: "ddd.",
+      icon: <ShareAltOutlined />,
+      title: "Share on Lichess",
+      content:
+        "With just a click you can share any study or poistion with everyone on lichess, for optimal interoperability.",
     },
   ];
   return (
     <div id="about" className="block aboutBlock">
       <div className="container-fluid">
+        <br />
         <div className="titleHolder">
-          <Title>About Opening Trainer</Title>
-          <p>The best chess training platformm!!</p>
+          <h1>Opening Trainer</h1>
+          <p>The best way to learn openings</p>
         </div>
         <div className="contentHolder">
-          <p>Opening trainer is epic!</p>
+          <p></p>
         </div>
-        <Title className={"titleHolder"}>Features</Title>
+        <hr></hr>
+        <h1 className="studyTitle">Features</h1>
         <Row gutter={[16, 16]}>
           {items.map((item) => {
             return (
@@ -48,9 +57,34 @@ const About = () => {
             );
           })}
         </Row>
+        <hr></hr>
+        <br></br>
         <Title className={"titleHolder"}>About Us</Title>
-        This website is made entirely by Daniele Luca, reach me through github
-        or linkedin. --bottone github--bottone linkedin
+        <div className="studyTitle">
+          This website is made entirely by Daniele Luca, reach me through github
+          or linkedin.
+          <br></br>
+          <br></br>
+          <br></br>
+          <Row gutter={[16, 16]}>
+            <Col span={6}></Col>
+            <Col span={6}>
+              <a
+                href="https://github.com/Proioxis4/opening-trainer"
+                target={"_blank"}
+              >
+                <GithubOutlined className="social-icons" />
+              </a>
+            </Col>
+            <Col span={6}>
+              {" "}
+              <a href="" target={"_blank"}>
+                <LinkedinOutlined className="social-icons" />
+              </a>
+            </Col>
+            <Col span={6}></Col>
+          </Row>
+        </div>
       </div>
     </div>
   );

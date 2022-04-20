@@ -318,134 +318,125 @@ const StudyId = () => {
       <br />
       <div className={"settings-container"}>
         <h1>Position inside this study:</h1>
-        <Collapse>
-          <Panel header="" key="1">
-            {isLogged && (
-              <>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    setIsAddModalVisible(true);
-                  }}
-                >
-                  Add Position
-                </Button>
-                <Modal
-                  title="Add Position"
-                  visible={isAddModalVisible}
-                  onOk={() => setIsAddModalVisible(false)}
-                  onCancel={() => setIsAddModalVisible(false)}
-                >
-                  {/* formcomponent */}
-                  <FormComponent
-                    fen={
-                      "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-                    }
-                    san={""}
-                    setFens={setFens}
-                    password={pass}
-                    id={fenId as string}
-                    type={"add"}
-                    setIsModalVisible={setIsAddModalVisible}
-                  />
-                </Modal>
-                <br />
-                <br />
-              </>
-            )}
-            <Row>
-              {fens?.map(
-                (
-                  fen: {
-                    _id: string;
-                    fen: string;
-                    description: string;
-                    san: string;
-                  },
-                  index: number
-                ) => (
-                  <Col
-                    xs={24}
-                    sm={12}
-                    lg={6}
-                    className="fen-card"
-                    key={fen._id}
-                  >
-                    <Card>
-                      <p>
-                        {/*todo: fix this board it is not responsive*/}
-                        <p>
-                          <strong>{fen.fen}</strong>
-                        </p>
-                        <div className="positions-board">
-                          <a
-                            href={`https://lichess.org/analysis/${fen.fen}`}
-                            target={"_blank"}
-                          >
-                            <Chessground
-                              height={boardWidth}
-                              width={boardWidth}
-                              config={{
-                                fen: fen?.fen,
-                                coordinates: false,
-                                viewOnly: true,
-                              }}
-                            />
-                          </a>
-                        </div>
-                      </p>
-                      <p>
-                        <strong>Description:</strong>
-                        {fen.description}
-                      </p>
-                      <p>
-                        <strong>Correct move:</strong>
-                        {fen.san}
-                      </p>
-                      <p>
-                        {" "}
-                        {isLogged && (
-                          <>
-                            <Button
-                              onClick={() => {
-                                setIsEditPositionModalVisible(true);
-                                setIndex(index);
-                              }}
-                            >
-                              <strong>Edit Position</strong> <EditOutlined />
-                            </Button>
-                            <Modal
-                              title="Edit Position"
-                              visible={isEditPositionModalVisible}
-                              onOk={() => setIsEditPositionModalVisible(false)}
-                              onCancel={() =>
-                                setIsEditPositionModalVisible(false)
-                              }
-                            >
-                              {/* formcomponent */}
-                              <FormComponent
-                                index={index}
-                                fen={fen.fen}
-                                san={fen.san}
-                                setFens={setFens}
-                                password={pass}
-                                id={fenId as string}
-                                type={"edit"}
-                                setIsModalVisible={
-                                  setIsEditPositionModalVisible
-                                }
-                              />
-                            </Modal>
-                          </>
-                        )}
-                      </p>
-                    </Card>
-                  </Col>
-                )
-              )}
-            </Row>
-          </Panel>
-        </Collapse>
+
+        {isLogged && (
+          <>
+            <Button
+              type="primary"
+              onClick={() => {
+                setIsAddModalVisible(true);
+              }}
+            >
+              Add Position
+            </Button>
+            <Modal
+              title="Add Position"
+              visible={isAddModalVisible}
+              onOk={() => setIsAddModalVisible(false)}
+              onCancel={() => setIsAddModalVisible(false)}
+            >
+              {/* formcomponent */}
+              <FormComponent
+                fen={"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}
+                san={""}
+                setFens={setFens}
+                password={pass}
+                id={fenId as string}
+                type={"add"}
+                setIsModalVisible={setIsAddModalVisible}
+              />
+            </Modal>
+            <br />
+            <br />
+          </>
+        )}
+        <Row>
+          {fens?.map(
+            (
+              fen: {
+                _id: string;
+                fen: string;
+                description: string;
+                san: string;
+              },
+              index: number
+            ) => (
+              <Col
+                xs={24}
+                sm={12}
+                lg={6}
+                className="card-statistics"
+                key={fen._id}
+              >
+                <Card>
+                  <p>
+                    {/*todo: fix this board it is not responsive*/}
+                    {/* <p>
+                      <strong>{fen.fen}</strong>
+                    </p> */}
+                    <div className="positions-board">
+                      <a
+                        href={`https://lichess.org/analysis/${fen.fen}`}
+                        target={"_blank"}
+                      >
+                        <Chessground
+                          height={boardWidth}
+                          width={boardWidth}
+                          config={{
+                            fen: fen?.fen,
+                            coordinates: false,
+                            viewOnly: true,
+                          }}
+                        />
+                      </a>
+                    </div>
+                  </p>
+                  <p>
+                    <strong>Description:</strong>
+                    {fen.description}
+                  </p>
+                  <p>
+                    <strong>Correct move:</strong>
+                    {fen.san}
+                  </p>
+                  <p>
+                    {" "}
+                    {isLogged && (
+                      <>
+                        <Button
+                          onClick={() => {
+                            setIsEditPositionModalVisible(true);
+                            setIndex(index);
+                          }}
+                        >
+                          <strong>Edit Position</strong> <EditOutlined />
+                        </Button>
+                        <Modal
+                          title="Edit Position"
+                          visible={isEditPositionModalVisible}
+                          onOk={() => setIsEditPositionModalVisible(false)}
+                          onCancel={() => setIsEditPositionModalVisible(false)}
+                        >
+                          {/* formcomponent */}
+                          <FormComponent
+                            index={index}
+                            fen={fen.fen}
+                            san={fen.san}
+                            setFens={setFens}
+                            password={pass}
+                            id={fenId as string}
+                            type={"edit"}
+                            setIsModalVisible={setIsEditPositionModalVisible}
+                          />
+                        </Modal>
+                      </>
+                    )}
+                  </p>
+                </Card>
+              </Col>
+            )
+          )}
+        </Row>
       </div>
     </div>
   );

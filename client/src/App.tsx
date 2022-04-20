@@ -9,22 +9,21 @@ import EditFens from "./components/forms/EditFens";
 import StudyId from "./components/study/StudyId";
 import Play from "./components/study/Play";
 import About from "./components/About";
-function Index() {
-  return <h2>prova</h2>;
-}
+import Home from "./components/Home";
 
 function App() {
   return (
     <>
       <NavBar />
       <div
-      /*  style={{
+        /* bad practice to change */
+        style={{
           backgroundColor: "#eeeeee",
-          height: "100vh",
-        }} */
+          height: "1000vh",
+        }}
       >
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Home />} />
           <Route path="/play" element={<Collections />} />
           <Route path="/about" element={<About />} />
           {/* form stuff */}
