@@ -11,6 +11,7 @@ export interface editLocationState {
 }
 
 export interface PlayState {
+  _id: string;
   collection_name: string;
   by: string;
   private: string | undefined;

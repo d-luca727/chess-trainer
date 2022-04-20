@@ -5,6 +5,7 @@ import axios from "axios";
 import Chessground from "@react-chess/chessground";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, Row, Col, Button, Input } from "antd";
+import Loader from "../utils/Loader";
 
 const { Search } = Input;
 const boardWidth = 150;
@@ -50,7 +51,7 @@ const Collections = () => {
 
     deleteStudy();
   } */
-  if (fens.length === 0) return <>loading...</>;
+  if (fens.length === 0) return <Loader />;
   return (
     <>
       <br />

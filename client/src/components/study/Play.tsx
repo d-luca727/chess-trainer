@@ -1,7 +1,7 @@
 import { toColor, toDests } from "../../utils/chessUtils";
 import { Howl, Howler } from "howler";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { PlayState } from "../../types";
 import Chessground from "@react-chess/chessground";
 import { ChessInstance } from "chess.js";
@@ -26,6 +26,7 @@ const Play = () => {
   const position = location.state as PlayState; // Type Casting, then you can get the params passed via router
   const { fens } = position;
   const [goodAnswers, setGoodAnswers] = useState<any>([]);
+  const { _id } = position;
 
   const [boardWidth, setBoardWidth] = useState(700);
 
@@ -49,6 +50,8 @@ const Play = () => {
 
   const setUpBoard = () => {
     if (index === fens.length) {
+      index = 0;
+
       setIsGameOver(true);
       return;
     }
@@ -169,11 +172,10 @@ const Play = () => {
                       />
                     )}
                   </span>
-                  <br />
-                  <br />
-                  <br />
+
                   {isCorrect && (
                     <>
+                      <br></br>
                       <Button
                         onClick={() => {
                           index++;
@@ -195,7 +197,17 @@ const Play = () => {
                     </>
                   )}
                   {!isCorrect && (
-                    <Button onClick={solutionHandler}>View Solution</Button>
+                    <>
+                      <br></br>
+                      <Statistic
+                        title="Number of correct answers:"
+                        value={`${
+                          goodAnswers.filter((e: number) => e === 1).length
+                        }`}
+                      />
+
+                      <Button onClick={solutionHandler}>View Solution</Button>
+                    </>
                   )}
                 </Card>
               </div>
@@ -203,10 +215,47 @@ const Play = () => {
           </>
         ) : (
           <>
-            <Col span={10}>
-              <h2 className="studyTitle">
-                Game is over. You studied {fens.length} positions
-              </h2>
+            <Col span={8}>
+              <div className="studyTitle card-statistics">
+                <Card>
+                  <h1>
+                    <Statistic
+                      title="Game Over"
+                      value={`You studied ${fens.length} Positions`}
+                    />
+                  </h1>
+                  <p>
+                    <Button
+                      onClick={() => {
+                        setGoodAnswers([]);
+                        setIsGameOver(false);
+                        setUpBoard();
+                      }}
+                    >
+                      Retry
+                    </Button>
+                  </p>
+                  <p>
+                    <Link to={`/study/${_id}`}>
+                      <Button>Back to the Study</Button>
+                    </Link>
+                  </p>
+                </Card>
+              </div>
+            </Col>
+            <Col span={6}>
+              <div className="studyTitle card-statistics">
+                <Card>
+                  <h1>
+                    <Statistic
+                      title="Number of correct answers:"
+                      value={`${
+                        goodAnswers.filter((e: number) => e === 1).length
+                      }`}
+                    />
+                  </h1>
+                </Card>
+              </div>
             </Col>
           </>
         )}

@@ -7,6 +7,7 @@ import {
 } from "@ant-design/icons";
 import { Row, Col, Typography } from "antd";
 import "../styles/about.css";
+const logo = require("../imgs/logo2.jpg");
 const { Title, Text } = Typography;
 const About = () => {
   const items = [
@@ -36,6 +37,7 @@ const About = () => {
       <div className="container-fluid">
         <br />
         <div className="titleHolder">
+          <img src={logo}></img>
           <h1>Opening Trainer</h1>
           <p>The best way to learn openings</p>
         </div>
