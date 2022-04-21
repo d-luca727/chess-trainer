@@ -146,13 +146,16 @@ const Play = () => {
                     /*   parser={(value) => value.replace("%", "")} */
                     onChange={(value) => setBoardWidth(700 + (value - 100) * 3)}
                   />
-                  <p></p>
-                  <div className="board">
-                    <Chessground
-                      width={boardWidth}
-                      height={boardWidth}
-                      config={config}
-                    />
+                  <div className="board-container">
+                    <div
+                      style={{
+                        margin: "0 auto",
+                        height: boardWidth,
+                        width: boardWidth,
+                      }}
+                    >
+                      <Chessground config={config} contained />
+                    </div>
                   </div>
                 </Card>
               </div>

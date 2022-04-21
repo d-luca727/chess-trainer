@@ -121,7 +121,7 @@ exports.deleteFen = async (req, res, next) => {
         .status(400)
         .json({ success: false, error: "invalid password" });
 
-    res.status(201).json({ success: true, data: "success" });
+    res.status(201).json({ success: true, data: doc.fens });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }

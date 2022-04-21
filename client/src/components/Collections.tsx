@@ -8,7 +8,6 @@ import { Card, Row, Col, Button, Input } from "antd";
 import Loader from "../utils/Loader";
 
 const { Search } = Input;
-const boardWidth = 150;
 
 const Collections = () => {
   const navigate = useNavigate();
@@ -104,20 +103,28 @@ const Collections = () => {
                   >
                     <p>
                       {fen?.fens[0] !== undefined ? (
-                        <Chessground
-                          height={boardWidth}
-                          width={boardWidth}
-                          config={{ fen: fen?.fens[0].fen, coordinates: false }}
-                        />
+                        <div className="collection-board">
+                          <Chessground
+                            contained
+                            config={{
+                              fen: fen?.fens[0].fen,
+                              coordinates: false,
+                              viewOnly: true,
+                            }}
+                          />
+                        </div>
                       ) : (
-                        <Chessground
-                          height={boardWidth}
-                          width={boardWidth}
-                          config={{ coordinates: false }}
-                        />
+                        <div className="collection-board">
+                          <Chessground
+                            contained
+                            config={{ coordinates: false, viewOnly: true }}
+                          />
+                        </div>
                       )}
                     </p>
-                    <p>Number of Positions to study: {fen.fens.length}</p>
+                    <div style={{ textAlign: "center" }}>
+                      <p>Number of Positions to study: {fen.fens.length}</p>
+                    </div>
 
                     {/* <Button onClick={() => onDeleteStudy(fen._id)}}>Delete</Button> */}
                   </Card>

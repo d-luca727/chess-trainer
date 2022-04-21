@@ -8,7 +8,16 @@ import axios from "axios";
 import { editLocationState } from "../../types";
 import Chessground from "@react-chess/chessground";
 
-import { Card, Row, Col, Button, message, Popconfirm, Modal } from "antd";
+import {
+  Card,
+  Row,
+  Col,
+  Button,
+  message,
+  Popconfirm,
+  Modal,
+  Space,
+} from "antd";
 import FormComponent from "./FormComponent";
 import { ChessInstance } from "chess.js";
 const Chessjs = require("chess.js");
@@ -62,9 +71,7 @@ const EditFens = () => {
         await axios
           .put(`/api/fens/${id}`, { index: index, private: password })
           .then((res) => {
-            setFens(() => {
-              return fens.splice(index, 1);
-            });
+            setFens(res.data.data);
             console.log("success!");
           });
       } catch (error) {
@@ -103,120 +110,138 @@ const EditFens = () => {
   /* if (fens.length === 0) return <h1>Loading...</h1>; */
   return (
     <>
-      <h1>Review your study</h1>
-      <Button
-        type="primary"
-        onClick={() => {
-          setIsModalVisible(true);
-          setIndex(index);
-        }}
-      >
-        Add Position
-      </Button>
-      <Modal
-        title="Add Position"
-        visible={isModalVisible}
-        onOk={() => setIsModalVisible(false)}
-        onCancel={() => setIsModalVisible(false)}
-      >
-        {/* formcomponent */}
-        <FormComponent
-          index={index}
-          fen={"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}
-          san={""}
-          setFens={setFens}
-          password={password}
-          id={id}
-          type={"add"}
-          setIsModalVisible={setIsModalVisible}
-        />
-      </Modal>
+      <br></br>
+      <h1 style={{ textAlign: "center" }}>Review your study</h1>
+      <hr></hr>
+      <div style={{ padding: 15 }}>
+        <Button
+          type="primary"
+          onClick={() => {
+            setIsModalVisible(true);
+            setIndex(index);
+          }}
+        >
+          Add Position
+        </Button>
+        <Modal
+          title="Add Position"
+          visible={isModalVisible}
+          onOk={() => setIsModalVisible(false)}
+          onCancel={() => setIsModalVisible(false)}
+        >
+          {/* formcomponent */}
+          <FormComponent
+            index={index}
+            fen={"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}
+            san={""}
+            setFens={setFens}
+            password={password}
+            id={id}
+            type={"add"}
+            setIsModalVisible={setIsModalVisible}
+          />
+        </Modal>
 
-      <Row gutter={[24, 24]}>
-        {fens?.map(
-          (
-            fen: {
-              _id: string;
-              fen: string;
-              description: string;
-              san: string;
-            },
-            index: number
-          ) => (
-            <Col xs={24} sm={12} lg={6} className="fen-card" key={fen._id}>
-              <Card>
-                <p>
-                  <a
-                    href={`https://lichess.org/analysis/${fen.fen}`}
-                    target={"_blank"}
-                  >
-                    <Chessground
-                      height={boardWidth}
-                      width={boardWidth}
-                      config={{
-                        fen: fen?.fen,
-                        coordinates: false,
-                        viewOnly: true,
-                      }}
-                    />
-                  </a>
-                </p>
-                <p>
-                  <strong>Description:</strong>
-                  {fen.description}
-                </p>
-                <p>
-                  <strong>Correct move:</strong>
-                  {fen.san}
-                </p>
-                <Button onClick={() => onDeleteFen(index)}>Delete</Button>
+        <br></br>
+        <br></br>
 
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    setIsEditModalVisible(true);
-                    setIndex(index);
-                  }}
-                >
-                  Edit Position
-                </Button>
-                <Modal
-                  title="Edit Position"
-                  visible={isEditModalVisible}
-                  onOk={() => setIsEditModalVisible(false)}
-                  onCancel={() => setIsEditModalVisible(false)}
-                >
-                  {/* formcomponent */}
-                  <FormComponent
-                    index={index}
-                    fen={fen.fen}
-                    san={fen.san}
-                    setFens={setFens}
-                    password={password}
-                    id={id}
-                    type={"edit"}
-                    setIsModalVisible={setIsEditModalVisible}
-                  />
-                </Modal>
-              </Card>
-            </Col>
-          )
-        )}
-      </Row>
+        <Row gutter={[24, 24]}>
+          {fens?.map(
+            (
+              fen: {
+                _id: string;
+                fen: string;
+                description: string;
+                san: string;
+              },
+              index: number
+            ) => (
+              <Col xs={24} sm={12} lg={6} className="fen-card" key={fen._id}>
+                <Card title={fen.fen}>
+                  <div style={{ textAlign: "center" }}>
+                    <p>
+                      <a
+                        href={`https://lichess.org/analysis/${fen.fen}`}
+                        target={"_blank"}
+                      >
+                        <div className="collection-board">
+                          <Chessground
+                            contained
+                            config={{
+                              fen: fen?.fen,
+                              coordinates: false,
+                              viewOnly: true,
+                            }}
+                          />
+                        </div>
+                      </a>
+                    </p>
+                    <p>
+                      <strong>Description:</strong>
+                      {fen.description}
+                    </p>
+                    <p>
+                      <strong>Correct move:</strong>
+                      {fen.san}
+                    </p>
+                    <Space>
+                      <Button onClick={() => onDeleteFen(index)}>Delete</Button>
 
-      <Popconfirm
-        title="Are you sure you want to submit this study?"
-        onConfirm={onSubmitStudy}
-      >
-        <Button type="primary">Submit Study</Button>
-      </Popconfirm>
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          setIsEditModalVisible(true);
+                          setIndex(index);
+                        }}
+                      >
+                        Edit Position
+                      </Button>
+                      <Modal
+                        title="Edit Position"
+                        visible={isEditModalVisible}
+                        onOk={() => setIsEditModalVisible(false)}
+                        onCancel={() => setIsEditModalVisible(false)}
+                      >
+                        {/* formcomponent */}
+                        <FormComponent
+                          index={index}
+                          fen={fen.fen}
+                          san={fen.san}
+                          setFens={setFens}
+                          password={password}
+                          id={id}
+                          type={"edit"}
+                          setIsModalVisible={setIsEditModalVisible}
+                        />
+                      </Modal>
+                    </Space>
+                  </div>
+                </Card>
+              </Col>
+            )
+          )}
+        </Row>
+      </div>
 
-      <Popconfirm
-        title="Are you sure you want to discard all the changes?"
-        onConfirm={() => onDiscardStudy()}
-      >
-        <Button danger>Discard Study</Button>
-      </Popconfirm>
+      <br></br>
+      <br></br>
+      <div style={{ textAlign: "center" }}>
+        <Space>
+          <Popconfirm
+            title="Are you sure you want to submit this study?"
+            onConfirm={onSubmitStudy}
+          >
+            <Button type="primary">Submit Study</Button>
+          </Popconfirm>
+
+          <Popconfirm
+            title="Are you sure you want to discard all the changes?"
+            onConfirm={() => onDiscardStudy()}
+          >
+            <Button danger>Discard Study</Button>
+          </Popconfirm>
+        </Space>
+      </div>
     </>
   );
 };

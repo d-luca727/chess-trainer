@@ -165,8 +165,18 @@
 
 .board {
   margin: 0 auto;
+  height: 700px;
+  width: 700px;
+}
+
+.collection-board {
+  margin: 0 auto;
+  height: 200px;
+  width: 200px;
+}
+
+.board-container {
   text-align: center;
-  position: relative;
 }
 
 .social-icons {
