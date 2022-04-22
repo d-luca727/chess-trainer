@@ -75,64 +75,66 @@ const Collections = () => {
         <Col span={4} />
       </Row>
       <br />
-      <br />
-      <Row gutter={[24, 24]}>
-        {fens
-          ?.filter((fen: any) => {
-            if (searchTerm == "") return fen;
-            else if (
-              fen.collection_name
-                .toLowerCase()
-                .includes(searchTerm.toLocaleLowerCase())
-            )
-              return fen;
-          })
-          .map(
-            (fen: {
-              _id: React.Key | null | undefined;
-              collection_name: any;
-              by: any;
-              fens: string | any[];
-            }) => (
-              <Col xs={24} sm={12} lg={6} className="fen-card" key={fen._id}>
-                <Link to={`/study/${fen._id}`}>
-                  <Card
-                    title={`${fen.collection_name}. `}
-                    extra={`by ${fen.by}. `}
-                    hoverable
-                  >
-                    <p>
-                      {fen?.fens[0] !== undefined ? (
-                        <div className="collection-board">
-                          <Chessground
-                            contained
-                            config={{
-                              fen: fen?.fens[0].fen,
-                              coordinates: false,
-                              viewOnly: true,
-                            }}
-                          />
-                        </div>
-                      ) : (
-                        <div className="collection-board">
-                          <Chessground
-                            contained
-                            config={{ coordinates: false, viewOnly: true }}
-                          />
-                        </div>
-                      )}
-                    </p>
-                    <div style={{ textAlign: "center" }}>
-                      <p>Number of Positions to study: {fen.fens.length}</p>
-                    </div>
 
-                    {/* <Button onClick={() => onDeleteStudy(fen._id)}}>Delete</Button> */}
-                  </Card>
-                </Link>
-              </Col>
-            )
-          )}
-      </Row>
+      <div style={{ padding: "20px" }}>
+        <Row gutter={[24, 24]}>
+          {fens
+            ?.filter((fen: any) => {
+              if (searchTerm == "") return fen;
+              else if (
+                fen.collection_name
+                  .toLowerCase()
+                  .includes(searchTerm.toLocaleLowerCase())
+              )
+                return fen;
+            })
+            .map(
+              (fen: {
+                _id: React.Key | null | undefined;
+                collection_name: any;
+                by: any;
+                fens: string | any[];
+              }) => (
+                <Col xs={24} sm={12} lg={6} className="fen-card" key={fen._id}>
+                  <Link to={`/study/${fen._id}`}>
+                    <Card
+                      title={`${fen.collection_name}. `}
+                      extra={`by ${fen.by}. `}
+                      hoverable
+                    >
+                      <p>
+                        {fen?.fens[0] !== undefined ? (
+                          <div className="collection-board">
+                            <Chessground
+                              contained
+                              config={{
+                                fen: fen?.fens[0].fen,
+                                coordinates: false,
+                                viewOnly: true,
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <div className="collection-board">
+                            <Chessground
+                              contained
+                              config={{ coordinates: false, viewOnly: true }}
+                            />
+                          </div>
+                        )}
+                      </p>
+                      <div style={{ textAlign: "center" }}>
+                        <p>Number of Positions to study: {fen.fens.length}</p>
+                      </div>
+
+                      {/* <Button onClick={() => onDeleteStudy(fen._id)}}>Delete</Button> */}
+                    </Card>
+                  </Link>
+                </Col>
+              )
+            )}
+        </Row>
+      </div>
     </>
   );
 };

@@ -175,10 +175,10 @@ const Play = () => {
                       />
                     )}
                   </span>
-
+                  <br></br>
+                  <hr></hr>
                   {isCorrect && (
                     <>
-                      <br></br>
                       <Button
                         onClick={() => {
                           index++;
@@ -201,7 +201,6 @@ const Play = () => {
                   )}
                   {!isCorrect && (
                     <>
-                      <br></br>
                       <Statistic
                         title="Number of correct answers:"
                         value={`${
@@ -227,6 +226,7 @@ const Play = () => {
                       value={`You studied ${fens.length} Positions`}
                     />
                   </h1>
+                  <hr></hr>
                   <p>
                     <Button
                       onClick={() => {

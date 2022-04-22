@@ -7,7 +7,7 @@ const Chessjs = require("chess.js");
 
 interface PropsInterface {
   fen: string;
-
+  description?: string;
   san: string;
   setFens(arg: any): void;
   password: string | undefined;
@@ -19,8 +19,17 @@ interface PropsInterface {
 
 const FormComponent = (props: PropsInterface) => {
   //validate move
-  const { fen, setFens, password, id, san, type, index, setIsModalVisible } =
-    props;
+  const {
+    fen,
+    setFens,
+    password,
+    id,
+    san,
+    type,
+    index,
+    description,
+    setIsModalVisible,
+  } = props;
   const [chess] = useState<ChessInstance>(
     new Chessjs("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   );
@@ -36,6 +45,7 @@ const FormComponent = (props: PropsInterface) => {
   //on edit modal
   const onEditFen = (values: any) => {
     const editFen = async () => {
+      console.log(index);
       try {
         await axios
           .put(`/api/fens/edit/${id}`, {
@@ -131,6 +141,7 @@ const FormComponent = (props: PropsInterface) => {
           name="description"
           label="Description"
           tooltip="add a description to understand the position better. It would be a good idea keeping it brief and simple."
+          initialValue={description}
           rules={[
             {
               required: false,

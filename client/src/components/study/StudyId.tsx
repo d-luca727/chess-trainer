@@ -5,6 +5,8 @@
 //todo: cool edit ui
 
 //todo: bug 'k is not defined chessground' when typing random stuff
+
+//todo: bug 'edit fen formcomponent' is not synced with the right initial values
 import Chessground from "@react-chess/chessground";
 
 import axios from "axios";
@@ -22,9 +24,11 @@ import {
   Input,
   message,
   Modal,
+  Popconfirm,
   Row,
   Typography,
 } from "antd";
+import Loader from "../../utils/Loader";
 
 const { Title } = Typography;
 
@@ -45,14 +49,17 @@ const StudyId = () => {
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [isEditPositionModalVisible, setIsEditPositionModalVisible] =
     useState(false);
-  const [index, setIndex] = useState(0);
+
+  //for edit formcomponent
+  const [_index, setIndex] = useState(0);
+  const [_fen, setFen] = useState("");
+  const [san, setSan] = useState("");
 
   //edit inputs
   const [IsStudyNameClicked, setIsStudyNameClicked] = useState(false);
   const [studyName, setStudyName] = useState("");
   const [IsAuthNameClicked, setIsAuthNameClicked] = useState(false);
   const [authName, setAuthName] = useState("");
-  console.log(position);
 
   const editStudyNameHandler = () => {
     const editName = async () => {
@@ -165,16 +172,45 @@ const StudyId = () => {
     auth();
   };
 
+  const onDeleteStudy = () => {
+    const deleteStudy = async () => {
+      try {
+        await axios
+          .put(`/api/fens/delete/${fenId}`, {
+            private: pass,
+          })
+          .then((res) => {
+            navigate("/play");
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    deleteStudy();
+  };
+
   const onStartGame = () => {
     navigate("play", { state: position });
   };
 
-  if (position === undefined) return <h1>Loading...</h1>;
+  if (position === undefined) return <Loader />;
   return (
-    <div>
+    <div style={{ padding: "10px" }}>
       {/* log in */}
       <Row gutter={[16, 16]}>
-        <Col span={4}></Col>
+        <Col span={4}>
+          {isLogged && (
+            <div style={{ textAlign: "center" }}>
+              <Popconfirm
+                title="Are you sure you want to delete this study?"
+                onConfirm={() => onDeleteStudy()}
+              >
+                <Button danger>Delete Study</Button>
+              </Popconfirm>
+            </div>
+          )}
+        </Col>
         <Col span={16}>
           <div className={"editStudyButton"}>
             {!isLogged && (
@@ -317,7 +353,7 @@ const StudyId = () => {
 
       <br />
       <div className={"settings-container"}>
-        <h1>Position inside this study:</h1>
+        <h1>Positions inside this study:</h1>
 
         {isLogged && (
           <>
@@ -368,7 +404,7 @@ const StudyId = () => {
                 className="card-statistics"
                 key={fen._id}
               >
-                <Card>
+                <Card title={fen.fen}>
                   <p>
                     {/*todo: fix this board it is not responsive*/}
                     {/* <p>
@@ -391,22 +427,31 @@ const StudyId = () => {
                       </a>
                     </div>
                   </p>
-                  <p>
+                  {/* <p>
                     <strong>Description:</strong>
                     {fen.description}
                   </p>
                   <p>
                     <strong>Correct move:</strong>
                     {fen.san}
-                  </p>
+                  </p> */}
                   <p>
                     {" "}
                     {isLogged && (
                       <>
+                        <p>
+                          <strong>Description:</strong>
+                          {fen.description}
+                        </p>
+                        <p>
+                          <strong>Correct move:</strong>
+                          {fen.san}
+                        </p>
                         <Button
                           onClick={() => {
-                            setIsEditPositionModalVisible(true);
                             setIndex(index);
+
+                            setIsEditPositionModalVisible(true);
                           }}
                         >
                           <strong>Edit Position</strong> <EditOutlined />
@@ -418,8 +463,10 @@ const StudyId = () => {
                           onCancel={() => setIsEditPositionModalVisible(false)}
                         >
                           {/* formcomponent */}
+
                           <FormComponent
-                            index={index}
+                            description={fen.description}
+                            index={_index}
                             fen={fen.fen}
                             san={fen.san}
                             setFens={setFens}

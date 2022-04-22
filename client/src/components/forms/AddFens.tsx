@@ -30,7 +30,8 @@ const AddFens = () => {
   const location = useLocation();
   const state = location.state as LocationState; // Type Casting, then you can get the params passed via router
   let by = state.by;
-  if (state.by === "") {
+
+  if (state.by === "" || state.by === undefined) {
     by = "Anonymous";
   }
 
@@ -107,6 +108,8 @@ const AddFens = () => {
         <Col span={10}>
           <Card>
             <div style={{ textAlign: "center" }}>
+              <h4>Board Preview</h4>
+              <hr></hr>
               Resize Board:{" "}
               <InputNumber
                 defaultValue={100}
@@ -221,46 +224,50 @@ const AddFens = () => {
       </Row>
       <br></br>
       <br></br>
-      <Row gutter={[24, 24]}>
-        {positions.map((position: any, index: number) => (
-          <Col xs={24} sm={12} lg={6} className="fen-card" key={position._id}>
-            <Card title={`${position.fen}. `} hoverable>
-              <p>
-                <div className="collection-board">
-                  <Chessground
-                    contained
-                    config={{
-                      fen: position.fen,
-                      coordinates: false,
-                      viewOnly: true,
-                    }}
-                  />
+      <div style={{ padding: "20px" }}>
+        <Row gutter={[24, 24]}>
+          {positions.map((position: any, index: number) => (
+            <Col xs={24} sm={12} lg={6} className="fen-card" key={position._id}>
+              <Card title={`${position.fen}. `} hoverable>
+                <p>
+                  <div className="collection-board">
+                    <Chessground
+                      contained
+                      config={{
+                        fen: position.fen,
+                        coordinates: false,
+                        viewOnly: true,
+                      }}
+                    />
+                  </div>
+                </p>
+                <div style={{ textAlign: "center" }}>
+                  <p>
+                    <strong>Description:</strong> {position.description}
+                  </p>
+                  <p>
+                    <strong>Answer:</strong>: {position.san}
+                  </p>
+                  {/* <Button onClick={() => onDeleteStudy(fen._id)}>Delete</Button> */}
                 </div>
-              </p>
-              <div style={{ textAlign: "center" }}>
-                <p>
-                  <strong>Description:</strong> {position.description}
-                </p>
-                <p>
-                  <strong>Answer:</strong>: {position.san}
-                </p>
-                {/* <Button onClick={() => onDeleteStudy(fen._id)}>Delete</Button> */}
-              </div>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </div>
       <hr></hr>
       <br></br>
       <div style={{ textAlign: "center" }}>
-        If you have made a mistake you will be able to edit / delete any
-        position in the next step.
-        <br></br>
-        <br></br>
         {positions.length > 0 && (
-          <Button type="primary" onClick={onSubmit}>
-            Review your Study
-          </Button>
+          <>
+            If you have made a mistake you will be able to edit / delete any
+            position in the next step.
+            <br></br>
+            <br></br>
+            <Button type="primary" onClick={onSubmit}>
+              Review your Study
+            </Button>
+          </>
         )}
       </div>
     </>

@@ -23,7 +23,7 @@ class Navbar extends Component {
     return (
       <nav className="menuBar">
         <div className="logo">
-          <a href="/home">
+          <a href="/">
             <img height={70} width={70} src={logo}></img>
           </a>
         </div>
