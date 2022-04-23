@@ -1,3 +1,5 @@
+//todo: to fix the epic gamer form modal bug use refreshPage() in combo with the LocalStorage to not make the user log out
+
 import React, { useState } from "react";
 import Chessground from "@react-chess/chessground";
 import { Button, Form, Input, message } from "antd";
@@ -6,9 +8,10 @@ import { ChessInstance } from "chess.js";
 const Chessjs = require("chess.js");
 
 interface PropsInterface {
-  fen: string;
+  fen?: string;
   description?: string;
-  san: string;
+  san?: string;
+  fens?: [];
   setFens(arg: any): void;
   password: string | undefined;
   id: string;
@@ -19,22 +22,28 @@ interface PropsInterface {
 
 const FormComponent = (props: PropsInterface) => {
   //validate move
-  const {
+  let {
     fen,
     setFens,
     password,
     id,
     san,
     type,
+    fens,
     index,
     description,
+
     setIsModalVisible,
   } = props;
   const [chess] = useState<ChessInstance>(
     new Chessjs("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   );
 
-  const [_fen, setFen] = useState(fen);
+  function refreshPage() {
+    window.location.reload();
+  }
+
+  const [_fen, setFen] = useState<string>(fen as string);
 
   const validateMove = (value: string) => {
     chess.load(_fen);
@@ -45,7 +54,6 @@ const FormComponent = (props: PropsInterface) => {
   //on edit modal
   const onEditFen = (values: any) => {
     const editFen = async () => {
-      console.log(index);
       try {
         await axios
           .put(`/api/fens/edit/${id}`, {
@@ -93,6 +101,7 @@ const FormComponent = (props: PropsInterface) => {
         autoComplete="off"
         labelCol={{ span: 10 }}
         wrapperCol={{ span: 14 }}
+        initialValues={{ fens }}
         onFinish={(values) => {
           if (type === "add") {
             onAddFen(values);
@@ -176,11 +185,12 @@ const FormComponent = (props: PropsInterface) => {
           <Input placeholder="Type the right move in san notation" />
         </Form.Item>
         <a href={`https://lichess.org/analysis/${_fen}`} target={"_blank"}>
-          <Chessground
-            width={400}
-            height={400}
-            config={{ fen: _fen, coordinates: false, viewOnly: true }}
-          />
+          <div style={{ margin: "0 auto", width: "400px", height: "400px" }}>
+            <Chessground
+              contained
+              config={{ fen: _fen, coordinates: false, viewOnly: true }}
+            />
+          </div>
         </a>
         <br />
         <br />

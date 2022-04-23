@@ -6,7 +6,7 @@
 
 //todo: bug 'k is not defined chessground' when typing random stuff
 
-//todo: bug 'edit fen formcomponent' is not synced with the right initial values
+//todo: bug 'edit fen formcomponent' is not synced with the right initial values THIS MIGHT BE A VERY BIG PROBLEM!
 import Chessground from "@react-chess/chessground";
 
 import axios from "axios";
@@ -42,8 +42,8 @@ const StudyId = () => {
   const navigate = useNavigate();
 
   //state
-  const [fens, setFens] = useState<any>([]);
   const [position, setPosition] = useState<any>();
+  const [fens, setFens] = useState<any>([]);
   const [pass, setPass] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
@@ -54,6 +54,7 @@ const StudyId = () => {
   const [_index, setIndex] = useState(0);
   const [_fen, setFen] = useState("");
   const [san, setSan] = useState("");
+  const [description, setDescription] = useState("");
 
   //edit inputs
   const [IsStudyNameClicked, setIsStudyNameClicked] = useState(false);
@@ -121,6 +122,7 @@ const StudyId = () => {
         const { data } = await axios.get(`/api/fens/${fenId}`, config);
         setPosition(data.data);
         setFens(data.data.fens);
+        console.log(data.data.fens);
       } catch (error) {
         console.log(error);
       }
@@ -194,7 +196,7 @@ const StudyId = () => {
     navigate("play", { state: position });
   };
 
-  if (position === undefined) return <Loader />;
+  if (position === undefined || fens.length === 0) return <Loader />;
   return (
     <div style={{ padding: "10px" }}>
       {/* log in */}
@@ -450,32 +452,14 @@ const StudyId = () => {
                         <Button
                           onClick={() => {
                             setIndex(index);
-
+                            setFen(fen.fen);
+                            setSan(fen.san);
+                            setDescription(fen.description);
                             setIsEditPositionModalVisible(true);
                           }}
                         >
                           <strong>Edit Position</strong> <EditOutlined />
                         </Button>
-                        <Modal
-                          title="Edit Position"
-                          visible={isEditPositionModalVisible}
-                          onOk={() => setIsEditPositionModalVisible(false)}
-                          onCancel={() => setIsEditPositionModalVisible(false)}
-                        >
-                          {/* formcomponent */}
-
-                          <FormComponent
-                            description={fen.description}
-                            index={_index}
-                            fen={fen.fen}
-                            san={fen.san}
-                            setFens={setFens}
-                            password={pass}
-                            id={fenId as string}
-                            type={"edit"}
-                            setIsModalVisible={setIsEditPositionModalVisible}
-                          />
-                        </Modal>
                       </>
                     )}
                   </p>
@@ -483,6 +467,31 @@ const StudyId = () => {
               </Col>
             )
           )}
+
+          <Modal
+            title="Edit Position"
+            visible={isEditPositionModalVisible}
+            onOk={() => {
+              setIsEditPositionModalVisible(false);
+            }}
+            onCancel={() => {
+              setIsEditPositionModalVisible(false);
+            }}
+          >
+            {/* formcomponent */}
+
+            <FormComponent
+              description={fens[_index]?.description}
+              index={_index}
+              fen={fens[_index]?.fen}
+              san={fens[_index]?.san}
+              setFens={setFens}
+              password={pass}
+              id={fenId as string}
+              type={"edit"}
+              setIsModalVisible={setIsEditPositionModalVisible}
+            />
+          </Modal>
         </Row>
       </div>
     </div>
