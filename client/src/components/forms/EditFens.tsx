@@ -130,7 +130,7 @@ const EditFens = () => {
           onCancel={() => setIsModalVisible(false)}
         >
           {/* formcomponent */}
-          <FormComponent
+          {/* <FormComponent
             index={index}
             fen={"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}
             san={""}
@@ -139,7 +139,7 @@ const EditFens = () => {
             id={id}
             type={"add"}
             setIsModalVisible={setIsModalVisible}
-          />
+          /> */}
         </Modal>
 
         <br></br>
@@ -203,7 +203,7 @@ const EditFens = () => {
                         onCancel={() => setIsEditModalVisible(false)}
                       >
                         {/* formcomponent */}
-                        <FormComponent
+                        {/* <FormComponent
                           index={index}
                           fen={fen.fen}
                           san={fen.san}
@@ -212,7 +212,7 @@ const EditFens = () => {
                           id={id}
                           type={"edit"}
                           setIsModalVisible={setIsEditModalVisible}
-                        />
+                        /> */}
                       </Modal>
                     </Space>
                   </div>

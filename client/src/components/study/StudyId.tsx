@@ -51,6 +51,7 @@ const StudyId = () => {
     useState(false);
 
   //for edit formcomponent
+  const [form] = Form.useForm();
   const [_index, setIndex] = useState(0);
   const [_fen, setFen] = useState("");
   const [san, setSan] = useState("");
@@ -363,6 +364,7 @@ const StudyId = () => {
               type="primary"
               onClick={() => {
                 setIsAddModalVisible(true);
+                form.resetFields();
               }}
             >
               Add Position
@@ -375,13 +377,13 @@ const StudyId = () => {
             >
               {/* formcomponent */}
               <FormComponent
-                fen={"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}
-                san={""}
+                form={form}
                 setFens={setFens}
                 password={pass}
                 id={fenId as string}
                 type={"add"}
                 setIsModalVisible={setIsAddModalVisible}
+                isModalVisible={isModalVisible}
               />
             </Modal>
             <br />
@@ -412,22 +414,32 @@ const StudyId = () => {
                     {/* <p>
                       <strong>{fen.fen}</strong>
                     </p> */}
-                    <div className="positions-board">
-                      <a
-                        href={`https://lichess.org/analysis/${fen.fen}`}
-                        target={"_blank"}
+
+                    <a
+                      href={`https://lichess.org/analysis/${fen.fen}`}
+                      target={"_blank"}
+                    >
+                      <div
+                        style={{
+                          margin: "0 auto",
+                          width: boardWidth,
+                          height: boardWidth,
+                        }}
                       >
                         <Chessground
-                          height={boardWidth}
-                          width={boardWidth}
+                          contained
                           config={{
                             fen: fen?.fen,
                             coordinates: false,
+                            orientation:
+                              fen?.fen.split(" ")[1] === "w"
+                                ? "white"
+                                : "black",
                             viewOnly: true,
                           }}
                         />
-                      </a>
-                    </div>
+                      </div>
+                    </a>
                   </p>
                   {/* <p>
                     <strong>Description:</strong>
@@ -450,11 +462,17 @@ const StudyId = () => {
                           {fen.san}
                         </p>
                         <Button
-                          onClick={() => {
+                          /* onClick={() => {
                             setIndex(index);
                             setFen(fen.fen);
                             setSan(fen.san);
                             setDescription(fen.description);
+                            setIsEditPositionModalVisible(true);
+                          }} */
+                          onClick={() => {
+                            form.setFieldsValue(fen);
+                            setIndex(index);
+                            setFen(fen.fen);
                             setIsEditPositionModalVisible(true);
                           }}
                         >
@@ -479,17 +497,17 @@ const StudyId = () => {
             }}
           >
             {/* formcomponent */}
-
+            {console.log("inside studyid")}
+            {console.log(form?.getFieldValue("fen"))}
             <FormComponent
-              description={fens[_index]?.description}
+              form={form}
               index={_index}
-              fen={fens[_index]?.fen}
-              san={fens[_index]?.san}
               setFens={setFens}
               password={pass}
               id={fenId as string}
               type={"edit"}
               setIsModalVisible={setIsEditPositionModalVisible}
+              isModalVisible={isEditPositionModalVisible}
             />
           </Modal>
         </Row>

@@ -1,55 +1,50 @@
-//todo: to fix the epic gamer form modal bug use refreshPage() in combo with the LocalStorage to not make the user log out
+//todo : fix addPosition fen is undefined bug
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Chessground from "@react-chess/chessground";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, FormInstance, Input, message } from "antd";
 import axios from "axios";
 import { ChessInstance } from "chess.js";
+import { toColor } from "../../utils/chessUtils";
+
 const Chessjs = require("chess.js");
 
+const { Item } = Form;
+
 interface PropsInterface {
-  fen?: string;
-  description?: string;
-  san?: string;
-  fens?: [];
+  form?: FormInstance;
   setFens(arg: any): void;
   password: string | undefined;
   id: string;
   type: "add" | "edit";
   index?: number;
   setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  isModalVisible?: boolean;
 }
 
 const FormComponent = (props: PropsInterface) => {
   //validate move
-  let {
-    fen,
-    setFens,
-    password,
-    id,
-    san,
-    type,
-    fens,
-    index,
-    description,
+  const { form, setFens, password, id, type, index, setIsModalVisible } = props;
 
-    setIsModalVisible,
-  } = props;
   const [chess] = useState<ChessInstance>(
     new Chessjs("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   );
 
-  function refreshPage() {
-    window.location.reload();
-  }
-
-  const [_fen, setFen] = useState<string>(fen as string);
+  const [_fen, setFen] = useState<string>("");
 
   const validateMove = (value: string) => {
-    chess.load(_fen);
+    chess.load(_fen as string);
     let _chess = chess;
     return _chess.move(value) !== null;
   };
+
+  console.log("inside form component");
+  console.log(form?.getFieldValue("fen"));
+  //setting the fen based on the form hook
+  useEffect(() => {
+    setFen(form?.getFieldValue("fen"));
+    chess.load(form?.getFieldValue("fen"));
+  }, [form]);
 
   //on edit modal
   const onEditFen = (values: any) => {
@@ -75,7 +70,6 @@ const FormComponent = (props: PropsInterface) => {
   };
   //on Add
   const onAddFen = (values: any) => {
-    console.log(values);
     const editFen = async () => {
       try {
         await axios
@@ -98,10 +92,10 @@ const FormComponent = (props: PropsInterface) => {
   return (
     <div>
       <Form
+        form={form}
         autoComplete="off"
         labelCol={{ span: 10 }}
         wrapperCol={{ span: 14 }}
-        initialValues={{ fens }}
         onFinish={(values) => {
           if (type === "add") {
             onAddFen(values);
@@ -121,7 +115,6 @@ const FormComponent = (props: PropsInterface) => {
           name="fen"
           label="Fen"
           tooltip="add a valid position in Forsyth-Edwards Notation"
-          initialValue={_fen}
           rules={[
             {
               required: true,
@@ -141,6 +134,7 @@ const FormComponent = (props: PropsInterface) => {
             placeholder="Type the Position you want to study"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setFen(e.target.value);
+
               chess.load(e.target.value);
             }}
           />
@@ -150,7 +144,6 @@ const FormComponent = (props: PropsInterface) => {
           name="description"
           label="Description"
           tooltip="add a description to understand the position better. It would be a good idea keeping it brief and simple."
-          initialValue={description}
           rules={[
             {
               required: false,
@@ -166,7 +159,6 @@ const FormComponent = (props: PropsInterface) => {
           label="Answer in san"
           tooltip="the best move for the position."
           dependencies={["fen"]}
-          initialValue={san}
           rules={[
             {
               required: true,
@@ -184,17 +176,44 @@ const FormComponent = (props: PropsInterface) => {
         >
           <Input placeholder="Type the right move in san notation" />
         </Form.Item>
-        <a href={`https://lichess.org/analysis/${_fen}`} target={"_blank"}>
+        {/* <a href={`https://lichess.org/analysis/${_fen}`} target={"_blank"}>
           <div style={{ margin: "0 auto", width: "400px", height: "400px" }}>
             <Chessground
               contained
-              config={{ fen: _fen, coordinates: false, viewOnly: true }}
+              config={{
+                fen: type === "edit" ? form?.getFieldValue("fen") : _fen,
+                orientation: toColor(chess),
+                coordinates: true,
+                viewOnly: true,
+              }}
             />
           </div>
         </a>
         <br />
-        <br />
-
+        <br /> */}
+        <Item shouldUpdate noStyle>
+          {() => {
+            let fen = form?.getFieldValue("fen");
+            chess.load(fen);
+            return (
+              <div
+                style={{ margin: "0 auto", width: "400px", height: "400px" }}
+              >
+                <Chessground
+                  contained
+                  config={{
+                    fen,
+                    coordinates: true,
+                    viewOnly: true,
+                    orientation: toColor(chess),
+                  }}
+                />
+              </div>
+            );
+          }}
+        </Item>
+        <br></br>
+        <br></br>
         <Form.Item wrapperCol={{ span: 24 }}>
           <Button block type="primary" htmlType="submit">
             {/* {type === "add" ? "Add" : "Edit"} Position */}
