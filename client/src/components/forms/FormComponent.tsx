@@ -42,8 +42,8 @@ const FormComponent = (props: PropsInterface) => {
   console.log(form?.getFieldValue("fen"));
   //setting the fen based on the form hook
   useEffect(() => {
-    setFen(form?.getFieldValue("fen"));
-    chess.load(form?.getFieldValue("fen"));
+    /*  setFen(form?.getFieldValue("fen")); */
+    /* chess.load(form?.getFieldValue("fen")); */
   }, [form]);
 
   //on edit modal
@@ -193,8 +193,12 @@ const FormComponent = (props: PropsInterface) => {
         <br /> */}
         <Item shouldUpdate noStyle>
           {() => {
-            let fen = form?.getFieldValue("fen");
+            let fen =
+              "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+            if (type === "edit") fen = form?.getFieldValue("fen");
+
             chess.load(fen);
+
             return (
               <div
                 style={{ margin: "0 auto", width: "400px", height: "400px" }}

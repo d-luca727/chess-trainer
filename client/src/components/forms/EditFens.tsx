@@ -17,6 +17,7 @@ import {
   Popconfirm,
   Modal,
   Space,
+  Form,
 } from "antd";
 import FormComponent from "./FormComponent";
 import { ChessInstance } from "chess.js";
@@ -38,6 +39,8 @@ const EditFens = () => {
   );
   const [_fen, setFen] = useState("");
   const [fens, setFens] = useState<any>([]);
+
+  const [form] = Form.useForm();
 
   //prove
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -118,7 +121,7 @@ const EditFens = () => {
           type="primary"
           onClick={() => {
             setIsModalVisible(true);
-            setIndex(index);
+            form.resetFields();
           }}
         >
           Add Position
@@ -130,16 +133,15 @@ const EditFens = () => {
           onCancel={() => setIsModalVisible(false)}
         >
           {/* formcomponent */}
-          {/* <FormComponent
-            index={index}
-            fen={"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}
-            san={""}
+          <FormComponent
+            form={form}
             setFens={setFens}
             password={password}
             id={id}
             type={"add"}
             setIsModalVisible={setIsModalVisible}
-          /> */}
+            isModalVisible={isModalVisible}
+          />
         </Modal>
 
         <br></br>
@@ -190,8 +192,10 @@ const EditFens = () => {
                       <Button
                         type="primary"
                         onClick={() => {
-                          setIsEditModalVisible(true);
+                          form.setFieldsValue(fen);
                           setIndex(index);
+                          setFen(fen.fen);
+                          setIsEditModalVisible(true);
                         }}
                       >
                         Edit Position
@@ -203,16 +207,17 @@ const EditFens = () => {
                         onCancel={() => setIsEditModalVisible(false)}
                       >
                         {/* formcomponent */}
-                        {/* <FormComponent
+
+                        <FormComponent
+                          form={form}
                           index={index}
-                          fen={fen.fen}
-                          san={fen.san}
                           setFens={setFens}
                           password={password}
                           id={id}
                           type={"edit"}
                           setIsModalVisible={setIsEditModalVisible}
-                        /> */}
+                          isModalVisible={isEditModalVisible}
+                        />
                       </Modal>
                     </Space>
                   </div>
