@@ -18,7 +18,7 @@ NODE_ENV=<<development>>
 
 ## Chess Dependencies
 
-- [Chessground](https://github.com/lichess-org/chessground), a free/libre open source chess UI developed for lichess.org. I used [this React Wrapper](https://github.com/react-chess/chessground).
+- [Chessground](https://github.com/lichess-org/chessground), a free/libre open source chess UI developed for lichess.org. I used this [React Wrapper for Chessground](https://github.com/react-chess/chessground).
 - [Chess.js](https://github.com/jhlywa/chess.js) for move validation/generation.
 
 
