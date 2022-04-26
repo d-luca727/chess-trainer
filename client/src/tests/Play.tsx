@@ -46,9 +46,6 @@ const Play: React.FC = () => {
   const [fensArr, setFensArr] = useState(exampleFens);
 
   const [message, setMessage] = useState("");
-  useEffect(() => {
-    console.log(index);
-  }, [index]);
 
   const setupChessBoard = () => {
     index = 0;
@@ -69,7 +66,7 @@ const Play: React.FC = () => {
                 from: orig as Square,
                 to: dest as Square,
               }); //setting the chess.js object first
-              console.log(res?.san);
+
               if (res?.san === fensArr[index].move) {
                 setMessage("GIUSTO!!!");
               } else {
@@ -102,7 +99,7 @@ const Play: React.FC = () => {
                 from: orig as Square,
                 to: dest as Square,
               }); //setting the chess.js object first
-              console.log(res?.san);
+
               if (res?.san === fensArr[index].move) {
                 setMessage("GIUSTO!!!");
               } else {

@@ -1,7 +1,6 @@
-import Chessground from "@react-chess/chessground";
-import { Button, Col, Row } from "antd";
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Button } from "antd";
+
+import { useNavigate } from "react-router-dom";
 const logo = require("../imgs/logo2.jpg");
 const Home = () => {
   const navigate = useNavigate();

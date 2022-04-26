@@ -16,7 +16,7 @@ function App() {
     <>
       <NavBar />
       <div
-        /* bad practice to change */
+        /* todo: this is not ideal I should change it */
         style={{
           backgroundColor: "#eeeeee",
           height: "1000vh",

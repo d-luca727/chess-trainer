@@ -39,12 +39,6 @@ const FormComponent = (props: PropsInterface) => {
     return _chess.move(value) !== null;
   };
 
-  //setting the fen based on the form hook
-  useEffect(() => {
-    /*  setFen(form?.getFieldValue("fen")); */
-    /* chess.load(form?.getFieldValue("fen")); */
-  }, [form]);
-
   //on edit modal
   const onEditFen = (values: {
     description: string;
@@ -184,21 +178,7 @@ const FormComponent = (props: PropsInterface) => {
         >
           <Input placeholder="Type the right move in san notation" />
         </Form.Item>
-        {/* <a href={`https://lichess.org/analysis/${_fen}`} target={"_blank"}>
-          <div style={{ margin: "0 auto", width: "400px", height: "400px" }}>
-            <Chessground
-              contained
-              config={{
-                fen: type === "edit" ? form?.getFieldValue("fen") : _fen,
-                orientation: toColor(chess),
-                coordinates: true,
-                viewOnly: true,
-              }}
-            />
-          </div>
-        </a>
-        <br />
-        <br /> */}
+
         <Item shouldUpdate noStyle>
           {() => {
             let fen =
@@ -233,7 +213,6 @@ const FormComponent = (props: PropsInterface) => {
         <br></br>
         <Form.Item wrapperCol={{ span: 24 }}>
           <Button block type="primary" htmlType="submit">
-            {/* {type === "add" ? "Add" : "Edit"} Position */}
             Save Position
           </Button>
         </Form.Item>

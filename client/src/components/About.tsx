@@ -8,7 +8,7 @@ import {
 import { Row, Col, Typography } from "antd";
 import "../styles/about.css";
 const logo = require("../imgs/logo2.jpg");
-const { Title, Text } = Typography;
+const { Title } = Typography;
 const About = () => {
   const items = [
     {

@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Form, Button, Checkbox, Input, Row, Col } from "antd";
 import { useNavigate } from "react-router-dom";
 
@@ -104,26 +103,7 @@ const AddStudy = () => {
               >
                 <Input.Password placeholder="Confirm your password" />
               </Form.Item>
-              {/* <Form.Item
-        name="agreement"
-        wrapperCol={{ span: 24 }}
-        valuePropName="checked"
-        rules={[
-          {
-            validator: (_, value) =>
-              value
-                ? Promise.resolve()
-                : Promise.reject(
-                    "To proceed, you need to agree with our terms and conditions"
-                  ),
-          },
-        ]}
-      >
-        <Checkbox>
-          {" "}
-          Agree to our <a href="#">Terms and Conditions</a>
-        </Checkbox>
-      </Form.Item> */}
+
               <Form.Item wrapperCol={{ span: 24 }}>
                 <Button type="primary" htmlType="submit">
                   Submit Study

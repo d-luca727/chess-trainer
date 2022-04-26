@@ -1,14 +1,10 @@
-//todo: set a button that lets the user edit everything or delete if he has the password of the study
-
-//todo: searchbar for Positions
+//todo: complex searchbar for Positions
 
 //todo: cool edit ui
 
 //todo: bug 'k is not defined chessground' when typing random stuff
 
-//todo: bug 'edit fen formcomponent' is not synced with the right initial values THIS MIGHT BE A VERY BIG PROBLEM!
 import Chessground from "@react-chess/chessground";
-
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -17,7 +13,6 @@ import FormComponent from "../forms/FormComponent";
 import {
   Button,
   Card,
-  Checkbox,
   Col,
   Collapse,
   Form,
@@ -30,10 +25,6 @@ import {
 } from "antd";
 import Loader from "../../utils/Loader";
 import { Fens, PlayState } from "../../types";
-
-const { Title } = Typography;
-
-const { Panel } = Collapse;
 
 const boardWidth = 200;
 
@@ -129,8 +120,6 @@ const StudyId = () => {
         const { data } = await axios.get(`/api/fens/${fenId}`, config);
         setPosition(data.data);
         setFens(data.data.fens);
-        /* console.log(data.data.fens); */
-        console.log(data.data);
       } catch (error) {
         console.error(error);
       }
@@ -349,9 +338,9 @@ const StudyId = () => {
             <h2>Number of positions to study: {fens.length}</h2>
             <br />
 
-            <label>Hardcore mode?todo</label>
+            {/*   <label>Hardcore mode?todo</label>
             <Checkbox />
-            <br />
+            <br /> */}
 
             <Button type="primary" onClick={onStartGame}>
               Play
@@ -417,11 +406,6 @@ const StudyId = () => {
               >
                 <Card title={fen.fen}>
                   <p>
-                    {/*todo: fix this board it is not responsive*/}
-                    {/* <p>
-                      <strong>{fen.fen}</strong>
-                    </p> */}
-
                     <a
                       href={`https://lichess.org/analysis/${fen.fen}`}
                       target={"_blank"}
@@ -469,13 +453,6 @@ const StudyId = () => {
                           {fen.san}
                         </p>
                         <Button
-                          /* onClick={() => {
-                            setIndex(index);
-                            setFen(fen.fen);
-                            setSan(fen.san);
-                            setDescription(fen.description);
-                            setIsEditPositionModalVisible(true);
-                          }} */
                           onClick={() => {
                             form.setFieldsValue(fen);
                             setIndex(index);

@@ -32,25 +32,7 @@ const Collections = () => {
 
     fetch();
   }, []);
-  /* 
-    const onDeleteStudy = (id:String) =>{
-    const deleteStudy = async () => {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
 
-      try {
-         await axios.delete("/api/fens/", config);
-        setFens(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    deleteStudy();
-  } */
   if (fens.length === 0) return <Loader />;
   return (
     <>
@@ -121,8 +103,6 @@ const Collections = () => {
                     <div style={{ textAlign: "center" }}>
                       <p>Number of Positions to study: {fen.fens.length}</p>
                     </div>
-
-                    {/* <Button onClick={() => onDeleteStudy(fen._id)}}>Delete</Button> */}
                   </Card>
                 </Link>
               </Col>

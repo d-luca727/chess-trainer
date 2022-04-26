@@ -31,7 +31,6 @@ const EditFens = () => {
   const { id, password } = location.state as editLocationState; // Type Casting, then you can get the params passed via router
 
   const [index, setIndex] = useState<number>();
-  console.log(id, password);
 
   //chess form things
   const [chess] = useState<ChessInstance>(
@@ -69,7 +68,6 @@ const EditFens = () => {
   //on delete
   const onDeleteFen = (index: number) => {
     const deleteFen = async () => {
-      console.log("ciao");
       try {
         await axios
           .put(`/api/fens/${id}`, { index: index, private: password })
@@ -92,7 +90,6 @@ const EditFens = () => {
   };
   //ondiscard
   const onDiscardStudy = () => {
-    console.log("helo");
     const deleteStudy = async () => {
       try {
         await axios

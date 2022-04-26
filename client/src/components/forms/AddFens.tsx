@@ -17,13 +17,10 @@ import Chessground from "@react-chess/chessground";
 
 import axios from "axios";
 
-import { toColor, toDests } from "../../utils/chessUtils";
 import { Config } from "@react-chess/chessground/node_modules/chessground/config";
 import { ChessInstance } from "chess.js";
-import FormComponent from "./FormComponent";
-const Chessjs = require("chess.js");
 
-const { Title } = Typography;
+const Chessjs = require("chess.js");
 
 const AddFens = () => {
   const navigate = useNavigate();
@@ -249,7 +246,6 @@ const AddFens = () => {
                   <p>
                     <strong>Answer:</strong>: {position.san}
                   </p>
-                  {/* <Button onClick={() => onDeleteStudy(fen._id)}>Delete</Button> */}
                 </div>
               </Card>
             </Col>
