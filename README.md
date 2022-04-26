@@ -1,16 +1,16 @@
 # Opening Trainer
 
-Opening Trainer is a Chess practice tool to study positions in a more interactive fashion. It is designed to help the user increase their understanding of a position by using Spaced Repetition which has been proven to be one of the best learning methods for enhancing long-term memory capabilities.
+Opening Trainer is a website used to interactively study chess positions. It is designed to help the user increase their understanding of a position by using Spaced Repetition which has been proven to be one of the best learning methods for enhancing long-term memory capabilities.
 
 ## Project Idea
 
-The project is still in a very early stage of development, the idea is to apply the concepts behind the game of [Flashcards](https://en.wikipedia.org/wiki/Flashcard) to develop a better and more solid understanding of positions. 
+The project is still in a very early stage of development, the idea is to apply the concepts behind the game of [Flashcards](https://en.wikipedia.org/wiki/Flashcard) to develop a better and more solid understanding of a given position. 
 
-For now Opening Trainer only offers an easy-to-use UI to manage and study chess positions, soon I will develop game mechanics that will further improve the user learning and playing experience.
+At the current state Opening Trainer offers only an easy-to-use UI to manage and study chess positions, soon I will develop more game mechanics that will further improve the user learning and playing experience.
 
 ### The features I'm planning to add are:
 
-- Subjective difficulty system based on how well you've learned a given position
+- Unique difficulty system based on how well you've learned a given position
 - Built in analysis board
 - Dynamically generated study collection using the user's chess game, lichess study or games' history
 - Multiplayer gamemode that will let you challenge a friend on a given study
