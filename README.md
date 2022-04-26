@@ -2,7 +2,7 @@
 
 Opening Trainer is a Chess practice tool to study positions in a more interactive fashion. It is designed to help the user increase their understanding of a position by using Spaced Repetition which has been proven to be one of the best learning methods for enhancing long-term memory capabilities.
 
-## Installation
+## How to run it
 
 1. `git clone https://github.com/Proioxis4/opening-trainer.git`
 2. add a .env file and replace those values down below
