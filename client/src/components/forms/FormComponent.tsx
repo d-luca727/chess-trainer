@@ -6,6 +6,7 @@ import { Button, Form, FormInstance, Input, message } from "antd";
 import axios from "axios";
 import { ChessInstance } from "chess.js";
 import { toColor } from "../../utils/chessUtils";
+import { Fens } from "../../types";
 
 const Chessjs = require("chess.js");
 
@@ -13,7 +14,7 @@ const { Item } = Form;
 
 interface PropsInterface {
   form?: FormInstance;
-  setFens(arg: any): void;
+  setFens(arg: Fens[]): void;
   password: string | undefined;
   id: string;
   type: "add" | "edit";
@@ -38,8 +39,6 @@ const FormComponent = (props: PropsInterface) => {
     return _chess.move(value) !== null;
   };
 
-  console.log("inside form component");
-  console.log(form?.getFieldValue("fen"));
   //setting the fen based on the form hook
   useEffect(() => {
     /*  setFen(form?.getFieldValue("fen")); */
@@ -47,7 +46,11 @@ const FormComponent = (props: PropsInterface) => {
   }, [form]);
 
   //on edit modal
-  const onEditFen = (values: any) => {
+  const onEditFen = (values: {
+    description: string;
+    fen: string;
+    san: string;
+  }) => {
     const editFen = async () => {
       try {
         await axios
@@ -69,9 +72,14 @@ const FormComponent = (props: PropsInterface) => {
     editFen();
   };
   //on Add
-  const onAddFen = (values: any) => {
+  const onAddFen = (values: {
+    fen: string;
+    description: string | undefined;
+    san: string;
+  }) => {
     const editFen = async () => {
       try {
+        if (values.description === undefined) values.description = "";
         await axios
           .put(`/api/fens/edit/fen/${id}`, {
             private: password,
@@ -196,8 +204,13 @@ const FormComponent = (props: PropsInterface) => {
             let fen =
               "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
             if (type === "edit") fen = form?.getFieldValue("fen");
+            if (type === "add" && form?.getFieldValue("fen") !== undefined) {
+              fen = form?.getFieldValue("fen");
+            }
 
-            chess.load(fen);
+            if (fen !== undefined) {
+              chess.load(fen);
+            }
 
             return (
               <div

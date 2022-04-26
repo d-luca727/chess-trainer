@@ -5,7 +5,12 @@ import { useNavigate } from "react-router-dom";
 const AddStudy = () => {
   const navigate = useNavigate();
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: {
+    by: string | undefined;
+    collectionName: string;
+    confirmPassword: string;
+    password: string;
+  }) => {
     navigate("fens", { state: values });
   };
   return (

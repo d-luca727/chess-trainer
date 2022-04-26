@@ -29,6 +29,7 @@ import {
   Typography,
 } from "antd";
 import Loader from "../../utils/Loader";
+import { Fens, PlayState } from "../../types";
 
 const { Title } = Typography;
 
@@ -42,8 +43,8 @@ const StudyId = () => {
   const navigate = useNavigate();
 
   //state
-  const [position, setPosition] = useState<any>();
-  const [fens, setFens] = useState<any>([]);
+  const [position, setPosition] = useState<PlayState>();
+  const [fens, setFens] = useState<Fens[]>([]);
   const [pass, setPass] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
@@ -77,9 +78,10 @@ const StudyId = () => {
           _id: fenId,
           private: pass,
         });
+        //fix this type
         setPosition((prev: any) => ({ ...prev, collection_name: studyName }));
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
 
@@ -101,9 +103,13 @@ const StudyId = () => {
           _id: fenId,
           private: pass,
         });
-        setPosition((prev: any) => ({ ...prev, by: authName }));
+        //fix this type
+        setPosition((prev: any) => ({
+          ...prev,
+          by: authName,
+        }));
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
 
@@ -123,16 +129,17 @@ const StudyId = () => {
         const { data } = await axios.get(`/api/fens/${fenId}`, config);
         setPosition(data.data);
         setFens(data.data.fens);
-        console.log(data.data.fens);
+        /* console.log(data.data.fens); */
+        console.log(data.data);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
 
     fetch();
   }, []);
 
-  const onSubmitPassword = (values: any) => {
+  const onSubmitPassword = (values: { password: string }) => {
     const auth = async () => {
       const config = {
         headers: {
@@ -163,7 +170,7 @@ const StudyId = () => {
           });
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
         message.error({
           content: "Provide a valid password!",
           key: "auth",
@@ -186,7 +193,7 @@ const StudyId = () => {
             navigate("/play");
           });
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
 
@@ -239,8 +246,8 @@ const StudyId = () => {
                     wrapperCol={{ span: 14 }}
                     onFinish={onSubmitPassword}
                     onFinishFailed={(error) => {
-                      console.log({ error });
-                      console.log(error);
+                      console.error({ error });
+                      console.error(error);
                     }}
                   >
                     <Form.Item
@@ -497,8 +504,7 @@ const StudyId = () => {
             }}
           >
             {/* formcomponent */}
-            {console.log("inside studyid")}
-            {console.log(form?.getFieldValue("fen"))}
+
             <FormComponent
               form={form}
               index={_index}

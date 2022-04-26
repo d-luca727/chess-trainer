@@ -1,8 +1,9 @@
 import { toColor, toDests } from "../utils/chessUtils";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Chessground from "@react-chess/chessground";
-import { ChessInstance, ShortMove } from "chess.js";
+import { ChessInstance, ShortMove, Square } from "chess.js";
 import { Config } from "@react-chess/chessground/node_modules/chessground/config";
+import { Key } from "chessground/types";
 const Chessjs = require("chess.js");
 
 const PlayvsPlayer: React.FC = () => {
@@ -15,8 +16,8 @@ const PlayvsPlayer: React.FC = () => {
       free: false,
       dests: toDests(chess),
       events: {
-        after: (orig: any, dest: any) => {
-          const res = chess.move({ from: orig, to: dest }); //setting the chess.js object first
+        after: (orig: Key, dest: Key) => {
+          const res = chess.move({ from: orig as Square, to: dest as Square }); //setting the chess.js object first
           setConfig((prevState) => {
             return {
               turnColor: toColor(chess), //toColor returns the player's color that has to move

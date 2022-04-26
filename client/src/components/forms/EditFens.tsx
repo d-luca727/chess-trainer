@@ -5,7 +5,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { editLocationState } from "../../types";
+import { editLocationState, Fens } from "../../types";
 import Chessground from "@react-chess/chessground";
 
 import {
@@ -30,7 +30,7 @@ const EditFens = () => {
   const location = useLocation();
   const { id, password } = location.state as editLocationState; // Type Casting, then you can get the params passed via router
 
-  const [index, setIndex] = useState<any>();
+  const [index, setIndex] = useState<number>();
   console.log(id, password);
 
   //chess form things
@@ -38,7 +38,7 @@ const EditFens = () => {
     new Chessjs("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   );
   const [_fen, setFen] = useState("");
-  const [fens, setFens] = useState<any>([]);
+  const [fens, setFens] = useState<Fens[]>([]);
 
   const [form] = Form.useForm();
 

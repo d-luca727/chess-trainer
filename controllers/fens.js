@@ -62,7 +62,7 @@ exports.putStudy = async (req, res, next) => {
     return res.status(400).json({ success: false, error: "invalid password" });
 
   try {
-    let doc = await Fen.findById(_id);
+    let doc = await Fen.findById(_id).select("+private");
 
     const isMatch = await doc.matchPasswords(private);
 
@@ -86,7 +86,7 @@ exports.deleteStudy = async (req, res, next) => {
     return res.status(400).json({ success: false, error: "invalid password" });
 
   try {
-    let doc = await Fen.findById(_id);
+    let doc = await Fen.findById(_id).select("+private");
 
     const isMatch = await doc.matchPasswords(private);
 
@@ -110,7 +110,7 @@ exports.deleteFen = async (req, res, next) => {
     return res.status(400).json({ success: false, error: "invalid password" });
 
   try {
-    let doc = await Fen.findById(_id);
+    let doc = await Fen.findById(_id).select("+private");
 
     const isMatch = await doc.matchPasswords(private);
     doc.fens.splice(index, 1);
@@ -135,7 +135,7 @@ exports.updateFen = async (req, res, next) => {
     return res.status(400).json({ success: false, error: "invalid password" });
 
   try {
-    let doc = await Fen.findById(_id);
+    let doc = await Fen.findById(_id).select("+private");
 
     const isMatch = await doc.matchPasswords(private);
 
@@ -163,7 +163,7 @@ exports.addFen = async (req, res, next) => {
     return res.status(400).json({ success: false, error: "invalid password" });
 
   try {
-    let doc = await Fen.findById(_id);
+    let doc = await Fen.findById(_id).select("+private");
 
     const isMatch = await doc.matchPasswords(private);
 
@@ -191,7 +191,7 @@ exports.authFenId = async (req, res, next) => {
     return res.status(400).json({ success: false, error: "invalid password" });
 
   try {
-    let doc = await Fen.findById(_id);
+    let doc = await Fen.findById(_id).select("+private");
 
     const isMatch = await doc.matchPasswords(private);
 

@@ -9,11 +9,16 @@ export interface editLocationState {
   id: string;
   password: string | undefined;
 }
+export interface Fens {
+  _id: string;
+  fen: string;
+  san: string;
+  description: string;
+}
 
 export interface PlayState {
-  _id: string;
+  _id: string | undefined;
   collection_name: string;
   by: string;
-  private: string | undefined;
-  fens: [{ fen: string; san: string; description: string }];
+  fens: Fens[];
 }

@@ -1,4 +1,4 @@
-import { LocationState } from "../../types";
+import { Fens, LocationState } from "../../types";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -45,7 +45,7 @@ const AddFens = () => {
   const [fen, setFen] = useState(
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
   );
-  const [positions, setPositions] = useState<any>([]);
+  const [positions, setPositions] = useState<Fens[]>([]);
 
   //validate move
   const validateMove = (value: string) => {
@@ -54,18 +54,19 @@ const AddFens = () => {
     return _chess.move(value) !== null;
   };
 
-  const onAdd = (values: any) => {
+  const onAdd = (values: Fens) => {
+    //todo: fix this type
     setPositions((prev: any) => {
-      if (values.description === undefined) {
+      if (values?.description === undefined) {
         values.description = "";
       }
       return [...prev, values];
     });
   };
-
-  const onSubmit = (values: any) => {
+  useEffect(() => {});
+  const onSubmit = () => {
     //post request
-    let data: any = {
+    let data = {
       collection_name: state.collectionName,
       by: state.by,
       fens: positions,
@@ -226,7 +227,7 @@ const AddFens = () => {
       <br></br>
       <div style={{ padding: "20px" }}>
         <Row gutter={[24, 24]}>
-          {positions.map((position: any, index: number) => (
+          {positions.map((position: Fens, index: number) => (
             <Col xs={24} sm={12} lg={6} className="fen-card" key={position._id}>
               <Card title={`${position.fen}. `} hoverable>
                 <p>

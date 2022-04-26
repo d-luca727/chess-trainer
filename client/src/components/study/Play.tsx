@@ -1,13 +1,16 @@
+//todo: use goodAnswers array to show an overview of the position the user got right and wrong
+
 import { toColor, toDests } from "../../utils/chessUtils";
 import { Howl, Howler } from "howler";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { PlayState } from "../../types";
 import Chessground from "@react-chess/chessground";
-import { ChessInstance } from "chess.js";
+import { ChessInstance, Square } from "chess.js";
 import { Config } from "@react-chess/chessground/node_modules/chessground/config";
-import { Button, Card, Col, InputNumber, Row, Statistic } from "antd";
+import { Button, Card, Col, InputNumber, Row, Space, Statistic } from "antd";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import { Key } from "chessground/types";
 const Chessjs = require("chess.js");
 
 const move = require("../../audio/move.mp3");
@@ -15,6 +18,7 @@ const wrong_move = require("../../audio/wrong_move.mp3");
 const piece_capture = require("../../audio/piece_capture.mp3");
 
 let index = 0;
+let moved = false;
 
 const Play = () => {
   const [chess] = useState<ChessInstance>(
@@ -25,7 +29,7 @@ const Play = () => {
   const location = useLocation();
   const position = location.state as PlayState; // Type Casting, then you can get the params passed via router
   const { fens } = position;
-  const [goodAnswers, setGoodAnswers] = useState<any>([]);
+  const [goodAnswers, setGoodAnswers] = useState<number[]>([]);
   const { _id } = position;
 
   const [boardWidth, setBoardWidth] = useState(700);
@@ -40,6 +44,7 @@ const Play = () => {
 
     return isCapture !== undefined ? true : false;
   };
+  //todo: specify the src type
   const soundPlayer = (src: any) => {
     const sound = new Howl({
       src,
@@ -68,21 +73,30 @@ const Play = () => {
           free: false,
           dests: toDests(chess), //toDests sets the legal moves
           events: {
-            after: (orig: any, dest: any) => {
-              const res = chess.move({ from: orig, to: dest }); //setting the chess.js object first
-              console.log(res?.san);
+            after: (orig: Key, dest: Key) => {
+              const res = chess.move({
+                from: orig as Square,
+                to: dest as Square,
+              }); //setting the chess.js object first
+
               if (res?.san === fens[index].san) {
                 isCaptureSound(res.san.split(""))
                   ? soundPlayer(piece_capture)
                   : soundPlayer(move);
+                if (!moved) {
+                  setGoodAnswers((prev: number[]) => [...prev, 1]);
+                  moved = true;
+                }
                 setMessage("v");
                 setIsCorrect(true);
-                setGoodAnswers((prev: number[]) => [...prev, 1]);
               } else {
+                if (!moved) {
+                  setGoodAnswers((prev: number[]) => [...prev, 0]);
+                  moved = true;
+                }
                 soundPlayer(wrong_move);
                 setMessage("x");
                 setUpBoard();
-                setGoodAnswers((prev: number[]) => [...prev, 0]);
               }
             },
           },
@@ -97,6 +111,10 @@ const Play = () => {
   }, []);
 
   const solutionHandler = () => {
+    if (!moved) {
+      setGoodAnswers((prev: number[]) => [...prev, 0]);
+      moved = true;
+    }
     chess.move(fens[index].san);
 
     setConfig(() => {
@@ -137,15 +155,21 @@ const Play = () => {
                   <h2>
                     Position {index + 1} of {fens.length}
                   </h2>
-                  Resize Board:{" "}
-                  <InputNumber
-                    defaultValue={100}
-                    min={50}
-                    max={150}
-                    formatter={(value) => `${value}%`}
-                    /*   parser={(value) => value.replace("%", "")} */
-                    onChange={(value) => setBoardWidth(700 + (value - 100) * 3)}
-                  />
+                  <Space>
+                    <div>Resize Board:</div>
+                    <InputNumber
+                      defaultValue={100}
+                      min={50}
+                      max={150}
+                      formatter={(value) => `${value}%`}
+                      /*   parser={(value) => value.replace("%", "")} */
+                      onChange={(value) =>
+                        setBoardWidth(700 + (value - 100) * 3)
+                      }
+                    />
+                  </Space>
+                  <br></br>
+                  <br></br>
                   <div className="board-container">
                     <div
                       style={{
@@ -181,6 +205,7 @@ const Play = () => {
                     <>
                       <Button
                         onClick={() => {
+                          moved = false;
                           index++;
                           setMessage("");
                           setIsCorrect(false);

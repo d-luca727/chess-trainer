@@ -6,12 +6,13 @@ import Chessground from "@react-chess/chessground";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, Row, Col, Button, Input } from "antd";
 import Loader from "../utils/Loader";
+import { PlayState } from "../types";
 
 const { Search } = Input;
 
 const Collections = () => {
   const navigate = useNavigate();
-  const [fens, setFens] = useState<any>([]);
+  const [fens, setFens] = useState<PlayState[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   useEffect(() => {
     const fetch = async () => {
@@ -79,7 +80,7 @@ const Collections = () => {
       <div style={{ padding: "20px" }}>
         <Row gutter={[24, 24]}>
           {fens
-            ?.filter((fen: any) => {
+            ?.filter((fen: PlayState) => {
               if (searchTerm == "") return fen;
               else if (
                 fen.collection_name
@@ -88,51 +89,44 @@ const Collections = () => {
               )
                 return fen;
             })
-            .map(
-              (fen: {
-                _id: React.Key | null | undefined;
-                collection_name: any;
-                by: any;
-                fens: string | any[];
-              }) => (
-                <Col xs={24} sm={12} lg={6} className="fen-card" key={fen._id}>
-                  <Link to={`/study/${fen._id}`}>
-                    <Card
-                      title={`${fen.collection_name}. `}
-                      extra={`by ${fen.by}. `}
-                      hoverable
-                    >
-                      <p>
-                        {fen?.fens[0] !== undefined ? (
-                          <div className="collection-board">
-                            <Chessground
-                              contained
-                              config={{
-                                fen: fen?.fens[0].fen,
-                                coordinates: false,
-                                viewOnly: true,
-                              }}
-                            />
-                          </div>
-                        ) : (
-                          <div className="collection-board">
-                            <Chessground
-                              contained
-                              config={{ coordinates: false, viewOnly: true }}
-                            />
-                          </div>
-                        )}
-                      </p>
-                      <div style={{ textAlign: "center" }}>
-                        <p>Number of Positions to study: {fen.fens.length}</p>
-                      </div>
+            .map((fen: PlayState) => (
+              <Col xs={24} sm={12} lg={6} className="fen-card" key={fen._id}>
+                <Link to={`/study/${fen._id}`}>
+                  <Card
+                    title={`${fen.collection_name}. `}
+                    extra={`by ${fen.by}. `}
+                    hoverable
+                  >
+                    <p>
+                      {fen?.fens[0] !== undefined ? (
+                        <div className="collection-board">
+                          <Chessground
+                            contained
+                            config={{
+                              fen: fen?.fens[0].fen,
+                              coordinates: false,
+                              viewOnly: true,
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="collection-board">
+                          <Chessground
+                            contained
+                            config={{ coordinates: false, viewOnly: true }}
+                          />
+                        </div>
+                      )}
+                    </p>
+                    <div style={{ textAlign: "center" }}>
+                      <p>Number of Positions to study: {fen.fens.length}</p>
+                    </div>
 
-                      {/* <Button onClick={() => onDeleteStudy(fen._id)}}>Delete</Button> */}
-                    </Card>
-                  </Link>
-                </Col>
-              )
-            )}
+                    {/* <Button onClick={() => onDeleteStudy(fen._id)}}>Delete</Button> */}
+                  </Card>
+                </Link>
+              </Col>
+            ))}
         </Row>
       </div>
     </>

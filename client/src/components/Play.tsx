@@ -1,8 +1,9 @@
 import { toColor, toDests } from "../utils/chessUtils";
 import React, { useEffect, useState, useRef } from "react";
 import Chessground from "@react-chess/chessground";
-import { ChessInstance } from "chess.js";
+import { ChessInstance, Square } from "chess.js";
 import { Config } from "@react-chess/chessground/node_modules/chessground/config";
+import { Key } from "chessground/types";
 const Chessjs = require("chess.js");
 
 const exampleFens = [
@@ -63,8 +64,11 @@ const Play: React.FC = () => {
           free: false,
           dests: toDests(chess), //toDests sets the legal moves
           events: {
-            after: (orig: any, dest: any) => {
-              const res = chess.move({ from: orig, to: dest }); //setting the chess.js object first
+            after: (orig: Key, dest: Key) => {
+              const res = chess.move({
+                from: orig as Square,
+                to: dest as Square,
+              }); //setting the chess.js object first
               console.log(res?.san);
               if (res?.san === fensArr[index].move) {
                 setMessage("GIUSTO!!!");
@@ -93,8 +97,11 @@ const Play: React.FC = () => {
           free: false,
           dests: toDests(chess), //toDests sets the legal moves
           events: {
-            after: (orig: any, dest: any) => {
-              const res = chess.move({ from: orig, to: dest }); //setting the chess.js object first
+            after: (orig: Key, dest: Key) => {
+              const res = chess.move({
+                from: orig as Square,
+                to: dest as Square,
+              }); //setting the chess.js object first
               console.log(res?.san);
               if (res?.san === fensArr[index].move) {
                 setMessage("GIUSTO!!!");
