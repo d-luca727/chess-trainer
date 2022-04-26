@@ -16,9 +16,14 @@ NODE_ENV=<<development>>
 3. `npm install` and `npm run start` to run the server
 4. `cd client` , `npm install`  and `npm start` to run the frontend
 
+## Chess Dependencies
+
+- [Chessground](https://github.com/lichess-org/chessground), a free/libre open source chess UI developed for lichess.org. I used [this React Wrapper](https://github.com/react-chess/chessground).
+- [Chess.js](https://github.com/jhlywa/chess.js) for move validation/generation.
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-## License
+
 
