@@ -38,6 +38,7 @@ const AddStudy = () => {
                   },
                   { whitespace: true },
                   { min: 4 },
+                  { max: 40 },
                 ]}
                 hasFeedback
               >
@@ -54,6 +55,7 @@ const AddStudy = () => {
                   },
                   { whitespace: true },
                   { min: 4 },
+                  { max: 16 },
                 ]}
                 hasFeedback
               >

@@ -7,7 +7,7 @@ const FenSchema = new mongoose.Schema({
     type: String,
 
     required: [true, "Please provide a study name"],
-    maxlength: 26,
+    maxlength: 40,
     minlength: 4,
   },
   by: {

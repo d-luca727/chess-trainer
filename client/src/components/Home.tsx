@@ -18,7 +18,7 @@ const Home = () => {
             <Button onClick={() => navigate("play")}>Start Training!</Button>
           </p>
           <p style={{ textAlign: "center" }}>
-            <a href="https://www.youtube.com/" target="_blank">
+            <a href="#" target="_blank">
               <Button>Get Started </Button>
             </a>
           </p>

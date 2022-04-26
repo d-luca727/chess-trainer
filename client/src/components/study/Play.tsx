@@ -215,7 +215,7 @@ const Play = () => {
                         Next
                       </Button>
                       <h2>Description</h2>
-                      <p>{fens[index].description} sfjwdsbfjhd</p>
+                      <p>{fens[index].description}</p>
                       <a
                         href={`https://lichess.org/analysis/${fens[index].fen}`}
                         target={"_blank"}

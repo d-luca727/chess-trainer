@@ -69,7 +69,8 @@ const AddFens = () => {
       fens: positions,
       private: state.password,
     };
-
+    console.log(data);
+    console.log(state.password);
     const post = async () => {
       try {
         await axios.post("/api/fens", data).then((res) => {
