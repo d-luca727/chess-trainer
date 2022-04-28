@@ -19,6 +19,7 @@ import axios from "axios";
 
 import { Config } from "@react-chess/chessground/node_modules/chessground/config";
 import { ChessInstance } from "chess.js";
+import { toColor } from "../../utils/chessUtils";
 
 const Chessjs = require("chess.js");
 
@@ -126,7 +127,14 @@ const AddFens = () => {
                   marginTop: 10,
                 }}
               >
-                <Chessground contained config={{ fen: fen, viewOnly: true }} />
+                <Chessground
+                  contained
+                  config={{
+                    fen: fen,
+                    orientation: toColor(chess),
+                    viewOnly: true,
+                  }}
+                />
               </div>
             </div>
           </Card>

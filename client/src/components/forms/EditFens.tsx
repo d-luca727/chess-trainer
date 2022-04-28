@@ -176,12 +176,12 @@ const EditFens = () => {
                       </a>
                     </p>
                     <p>
-                      <strong>Description:</strong>
-                      {fen.description}
+                      <strong>Description: </strong>
+                      <p>{fen.description}</p>
                     </p>
                     <p>
-                      <strong>Correct move:</strong>
-                      {fen.san}
+                      <strong>Correct move: </strong>
+                      <p>{fen.san}</p>
                     </p>
                     <Space>
                       <Button onClick={() => onDeleteFen(index)}>Delete</Button>
