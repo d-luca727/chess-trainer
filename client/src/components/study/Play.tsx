@@ -32,7 +32,7 @@ const Play = () => {
   const [goodAnswers, setGoodAnswers] = useState<number[]>([]);
   const { _id } = position;
 
-  const [boardWidth, setBoardWidth] = useState(700);
+  const [boardWidth, setBoardWidth] = useState(680);
 
   const [message, setMessage] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
@@ -127,11 +127,31 @@ const Play = () => {
     setIsCorrect(true);
   };
   Howler.volume(1.0);
+
+  //resposonsive stuff
+  const [windowDimension, setWindowDimension] = useState(0);
+
+  useEffect(() => {
+    setWindowDimension(window.innerWidth);
+  }, []);
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimension(window.innerWidth);
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div>
-      <Row gutter={[16, 16]} justify={"center"}>
-        <Col span={6}>
-          <div className="studyTitle card-statistics">
+      <Row>
+        <Col xxl={{ span: 6 }} sm={{ span: 24 }} xs={{ span: 24 }}>
+          <div
+            style={{ padding: windowDimension >= 1600 ? 30 : 15 }}
+            className="studyTitle card-statistics"
+          >
             <Card>
               <h1>
                 <Statistic
@@ -149,42 +169,67 @@ const Play = () => {
 
         {!isGameOver ? (
           <>
-            <Col span={12}>
-              <div className="studyTitle card-statistics">
+            <Col xxl={{ span: 12 }} sm={{ span: 24 }} xs={{ span: 24 }}>
+              <div
+                style={{ padding: windowDimension >= 1600 ? 30 : 0 }}
+                className="studyTitle card-statistics"
+              >
                 <Card>
                   <h2>
                     Position {index + 1} of {fens.length}
                   </h2>
-                  <Space>
-                    <div>Resize Board:</div>
-                    <InputNumber
-                      defaultValue={100}
-                      min={50}
-                      max={150}
-                      formatter={(value) => `${value}%`}
-                      /*   parser={(value) => value.replace("%", "")} */
-                      onChange={(value) =>
-                        setBoardWidth(700 + (value - 100) * 3)
-                      }
-                    />
-                  </Space>
+                  {windowDimension > boardWidth && (
+                    <Space>
+                      <div>Resize Board:</div>
+                      <InputNumber
+                        defaultValue={100}
+                        min={50}
+                        max={100}
+                        formatter={(value) => `${value}%`}
+                        /*   parser={(value) => value.replace("%", "")} */
+                        onChange={(value) =>
+                          setBoardWidth(680 + (value - 100) * 3)
+                        }
+                      />
+                    </Space>
+                  )}
                   <br></br>
                   <br></br>
-                  <div className="board-container">
-                    <div
-                      style={{
-                        margin: "0 auto",
-                        height: boardWidth,
-                        width: boardWidth,
-                      }}
-                    >
-                      <Chessground config={config} contained />
+                  {windowDimension > boardWidth && (
+                    <div style={{ textAlign: "center" }}>
+                      <div
+                        style={{
+                          margin: "0 auto",
+                          height: boardWidth,
+                          width: boardWidth,
+                        }}
+                      >
+                        <Chessground config={config} contained />
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </Card>
               </div>
+              {windowDimension <= boardWidth && (
+                <div style={{ textAlign: "center" }}>
+                  <div
+                    style={{
+                      margin: "0 auto",
+                      height: windowDimension,
+                      width: windowDimension,
+                    }}
+                  >
+                    <Chessground config={config} contained />
+                  </div>
+                </div>
+              )}
             </Col>
-            <Col span={6}>
+            <Col
+              xxl={{ span: 6 }}
+              sm={{ span: 24 }}
+              xs={{ span: 24 }}
+              style={{ padding: windowDimension >= 1600 ? 30 : 0 }}
+            >
               <div className="studyTitle card-statistics">
                 <Card>
                   <span>
@@ -242,8 +287,11 @@ const Play = () => {
           </>
         ) : (
           <>
-            <Col span={8}>
-              <div className="studyTitle card-statistics">
+            <Col xxl={{ span: 8 }} sm={{ span: 24 }} xs={{ span: 24 }}>
+              <div
+                style={{ padding: windowDimension >= 1600 ? 30 : 15 }}
+                className="studyTitle card-statistics"
+              >
                 <Card>
                   <h1>
                     <Statistic
@@ -271,8 +319,16 @@ const Play = () => {
                 </Card>
               </div>
             </Col>
-            <Col span={6}>
-              <div className="studyTitle card-statistics">
+            <Col
+              style={{ padding: 0, margin: 0 }}
+              xxl={{ span: 6 }}
+              sm={{ span: 24 }}
+              xs={{ span: 24 }}
+            >
+              <div
+                style={{ padding: windowDimension >= 1600 ? 30 : 15 }}
+                className="studyTitle card-statistics"
+              >
                 <Card>
                   <h1>
                     <Statistic

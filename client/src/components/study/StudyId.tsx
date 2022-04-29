@@ -198,7 +198,7 @@ const StudyId = () => {
     <div style={{ padding: "10px" }}>
       {/* log in */}
       <Row gutter={[16, 16]}>
-        <Col span={4}>
+        <Col sm={{ span: 4 }}>
           {isLogged && (
             <div style={{ textAlign: "center" }}>
               <Popconfirm
@@ -210,7 +210,7 @@ const StudyId = () => {
             </div>
           )}
         </Col>
-        <Col span={16}>
+        <Col xs={{ span: 24 }} sm={{ span: 24 }}>
           <div className={"editStudyButton"}>
             {!isLogged && (
               <>
@@ -333,7 +333,7 @@ const StudyId = () => {
         <Col span={4}></Col>
 
         <Col span={4}></Col>
-        <Col span={16}>
+        <Col xs={{ span: 24 }} sm={{ span: 24 }}>
           <div className={"settings-container"}>
             <h2>Number of positions to study: {fens.length}</h2>
             <br />
@@ -399,8 +399,8 @@ const StudyId = () => {
             ) => (
               <Col
                 xs={24}
-                sm={12}
-                lg={6}
+                xl={12}
+                xxl={6}
                 className="card-statistics"
                 key={fen._id}
               >

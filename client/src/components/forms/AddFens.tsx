@@ -12,6 +12,8 @@ import {
   Card,
   Modal,
   Statistic,
+  Space,
+  message,
 } from "antd";
 import Chessground from "@react-chess/chessground";
 
@@ -60,6 +62,21 @@ const AddFens = () => {
       }
       return [...prev, values];
     });
+
+    message.success("Position added successfully");
+    if (windowDimension >= 1800)
+      window.scrollTo({
+        top: 800,
+        left: 0,
+        behavior: "smooth",
+      });
+    else {
+      window.scrollTo({
+        top: 1500,
+        left: 0,
+        behavior: "smooth",
+      });
+    }
   };
   useEffect(() => {});
   const onSubmit = () => {
@@ -88,11 +105,27 @@ const AddFens = () => {
     post();
   };
 
+  //resposonsive stuff
+  const [windowDimension, setWindowDimension] = useState(0);
+
+  useEffect(() => {
+    setWindowDimension(window.innerWidth);
+  }, []);
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimension(window.innerWidth);
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
       <br></br>
-      <Row gutter={[16, 16]}>
-        <Col span={6}>
+      <Row>
+        <Col span={windowDimension >= 1800 ? 6 : 24}>
           <div className="studyTitle card-statistics">
             <Card>
               <h1>
@@ -105,46 +138,86 @@ const AddFens = () => {
             </Card>
           </div>
         </Col>
-        <Col span={10}>
+        <Col
+          span={windowDimension >= 1800 ? 10 : 24}
+          style={{ paddingTop: 15, paddingBottom: 15 }}
+        >
           <Card>
             <div style={{ textAlign: "center" }}>
               <h4>Board Preview</h4>
-              <hr></hr>
-              Resize Board:{" "}
-              <InputNumber
-                defaultValue={100}
-                min={50}
-                max={115}
-                formatter={(value) => `${value}%`}
-                /*   parser={(value) => value.replace("%", "")} */
-                onChange={(value) => setBoardWidth(700 + (value - 100) * 3)}
-              />
+              {windowDimension > boardWidth && (
+                <Space style={{ paddingTop: 10, paddingBottom: 10 }}>
+                  <div>Resize Board:</div>
+                  <InputNumber
+                    defaultValue={100}
+                    min={50}
+                    max={100}
+                    formatter={(value) => `${value}%`}
+                    /*   parser={(value) => value.replace("%", "")} */
+                    onChange={(value) => setBoardWidth(680 + (value - 100) * 3)}
+                  />
+                </Space>
+              )}
+
+              {windowDimension > boardWidth && (
+                <div style={{ textAlign: "center" }}>
+                  <div
+                    style={{
+                      margin: "0 auto",
+                      height: boardWidth,
+                      width: boardWidth,
+                    }}
+                  >
+                    <Chessground
+                      config={{
+                        fen: fen,
+                        orientation: toColor(chess),
+                        viewOnly: true,
+                      }}
+                      contained
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </Card>
+          {windowDimension <= boardWidth && (
+            <div
+              style={{
+                textAlign: "center",
+              }}
+            >
               <div
                 style={{
                   margin: "0 auto",
-                  height: boardWidth,
-                  width: boardWidth,
-                  marginTop: 10,
+                  height: windowDimension,
+                  width: windowDimension,
                 }}
               >
                 <Chessground
-                  contained
                   config={{
                     fen: fen,
                     orientation: toColor(chess),
                     viewOnly: true,
                   }}
+                  contained
                 />
               </div>
             </div>
-          </Card>
+          )}
         </Col>
-        <Col span={8}>
+        <Col style={{ padding: 20 }} span={windowDimension >= 1800 ? 8 : 24}>
           <Card title={"Add a Fen"}>
             <Form
               autoComplete="off"
               /*  labelCol={{ span: 10 }}
             wrapperCol={{ span: 14 }} */
+              style={{
+                paddingLeft:
+                  windowDimension >= 1200 && windowDimension < 1800 ? 200 : 20,
+                paddingRight:
+                  windowDimension >= 1200 && windowDimension < 1800 ? 200 : 20,
+              }}
               onFinish={(values) => onAdd(values)}
               onFinishFailed={(error) => {
                 console.log({ error });
@@ -230,7 +303,9 @@ const AddFens = () => {
         </Col>
       </Row>
       <br></br>
+      <hr></hr>
       <br></br>
+      <h2 style={{ textAlign: "center" }}>Positions inside this study</h2>
       <div style={{ padding: "20px" }}>
         <Row gutter={[24, 24]}>
           {positions.map((position: Fens, index: number) => (

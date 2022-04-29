@@ -15,13 +15,13 @@ const AddStudy = () => {
   return (
     <>
       <Row gutter={[16, 16]}>
-        <Col span={8} />
-        <Col span={8}>
+        <Col span={2} md={{ span: 6 }} />
+        <Col span={20} md={{ span: 12 }}>
           <div style={{ textAlign: "center" }}>
             <Form
               autoComplete="off"
-              labelCol={{ span: 10 }}
-              wrapperCol={{ span: 14 }}
+              /* labelCol={{ span: 10 }}
+              wrapperCol={{ span: 14 }} */
               onFinish={onFinish}
               onFinishFailed={(error) => {
                 console.log({ error });
@@ -114,7 +114,7 @@ const AddStudy = () => {
             </Form>
           </div>
         </Col>
-        <Col span={8} />
+        <Col span={2} md={{ span: 6 }} />
       </Row>
     </>
   );

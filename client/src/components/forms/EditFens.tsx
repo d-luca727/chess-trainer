@@ -163,7 +163,13 @@ const EditFens = () => {
                         href={`https://lichess.org/analysis/${fen.fen}`}
                         target={"_blank"}
                       >
-                        <div className="collection-board">
+                        <div
+                          style={{
+                            margin: "0 auto",
+                            height: 200,
+                            width: 200,
+                          }}
+                        >
                           <Chessground
                             contained
                             config={{

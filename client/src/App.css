@@ -114,30 +114,6 @@
   border-bottom-color: transparent;
 }
 
-@media (max-width: 767px) {
-  .barsMenu {
-    display: inline-block;
-  }
-
-  .leftMenu,
-  .rightMenu {
-    display: none;
-  }
-
-  .logo a {
-    margin-left: -20px;
-  }
-
-  .menuCon .ant-menu-item,
-  .menuCon .ant-menu-submenu-title {
-    padding: 1px 20px;
-  }
-
-  .logo a {
-    padding: 10px 20px;
-  }
-}
-
 .editStudyButton {
   display: flex;
   justify-content: flex-end;
@@ -169,12 +145,6 @@
   width: 700px;
 }
 
-.collection-board {
-  margin: 0 auto;
-  height: 200px;
-  width: 200px;
-}
-
 .board-container {
   text-align: center;
 }
@@ -186,6 +156,12 @@
 
 .social-icons:hover {
   font-size: 500%;
+}
+
+.collection-board {
+  margin: 0 auto;
+  height: 200px;
+  width: 200px;
 }
 
 .example {

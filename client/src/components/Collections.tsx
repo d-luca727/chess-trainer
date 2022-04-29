@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Card, Row, Col, Button, Input } from "antd";
 import Loader from "../utils/Loader";
 import { PlayState } from "../types";
+import { PlusOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
 
@@ -40,7 +41,14 @@ const Collections = () => {
       <Row gutter={[16, 16]}>
         <Col span={4} />
         <Col span={16}>
-          <Button onClick={() => navigate("/add-study")}>Add a Study</Button>
+          <Button
+            icon={<PlusOutlined />}
+            type={"primary"}
+            onClick={() => navigate("/add-study")}
+          >
+            {/*      <PlusOutlined /> */}
+            Add a Study
+          </Button>
         </Col>
         <Col span={4} />
 

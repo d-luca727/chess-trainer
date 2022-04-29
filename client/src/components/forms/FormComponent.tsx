@@ -91,6 +91,21 @@ const FormComponent = (props: PropsInterface) => {
 
     editFen();
   };
+  //resposonsive stuff
+  const [windowDimension, setWindowDimension] = useState(0);
+
+  useEffect(() => {
+    setWindowDimension(window.innerWidth);
+  }, []);
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimension(window.innerWidth);
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
     <div>
       <Form
@@ -194,7 +209,11 @@ const FormComponent = (props: PropsInterface) => {
 
             return (
               <div
-                style={{ margin: "0 auto", width: "400px", height: "400px" }}
+                style={{
+                  margin: "0 auto",
+                  width: windowDimension >= 470 ? 400 : windowDimension - 70,
+                  height: windowDimension >= 470 ? 400 : windowDimension - 70,
+                }}
               >
                 <Chessground
                   contained
