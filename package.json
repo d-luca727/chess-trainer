@@ -1,10 +1,11 @@
 {
   "name": "opening-trainer",
   "version": "1.0.0",
-  "description": "**name to decide** is a tool chess players could use to learn and review new openings as well as positions you want to learn better. It is interactive and very effective.",
-  "main": "index.js",
+  "description": "tool study opening and positions",
+  "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "repository": {
     "type": "git",
