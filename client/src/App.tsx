@@ -10,8 +10,23 @@ import StudyId from "./components/study/StudyId";
 import Play from "./components/study/Play";
 import About from "./components/About";
 import Home from "./components/Home";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [windowDimension, setWindowDimension] = useState(0);
+
+  useEffect(() => {
+    setWindowDimension(window.innerHeight);
+  }, []);
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimension(window.innerHeight);
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
     <>
       <NavBar />
@@ -19,7 +34,7 @@ function App() {
         /* todo: this is not ideal I should change it */
         style={{
           backgroundColor: "#eeeeee",
-          height: "1000vh",
+          height: windowDimension,
         }}
       >
         <Routes>
