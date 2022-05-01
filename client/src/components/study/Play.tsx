@@ -287,7 +287,7 @@ const Play = () => {
           </>
         ) : (
           <>
-            <Col xxl={{ span: 8 }} sm={{ span: 24 }} xs={{ span: 24 }}>
+            <Col xxl={{ span: 12 }} sm={{ span: 24 }} xs={{ span: 24 }}>
               <div
                 style={{ padding: windowDimension >= 1600 ? 30 : 15 }}
                 className="studyTitle card-statistics"

@@ -4,7 +4,6 @@
   "description": "**name to decide** is a tool chess players could use to learn and review new openings as well as positions you want to learn better. It is interactive and very effective.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "repository": {
