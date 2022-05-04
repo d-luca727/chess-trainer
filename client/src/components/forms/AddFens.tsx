@@ -328,7 +328,7 @@ const AddFens = () => {
                     <strong>Description:</strong> {position.description}
                   </p>
                   <p>
-                    <strong>Answer:</strong>: {position.san}
+                    <strong>Answer:</strong> {position.san}
                   </p>
                 </div>
               </Card>
