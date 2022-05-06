@@ -4,9 +4,7 @@ import Chessground from "@react-chess/chessground";
 import { ChessInstance, Move, ShortMove } from "chess.js";
 import { Config } from "@react-chess/chessground/node_modules/chessground/config";
 
-import Container from "react-bootstrap/Container";
 import "../styles/style.css";
-import { Col, Row } from "react-bootstrap";
 
 const Chessjs = require("chess.js");
 
