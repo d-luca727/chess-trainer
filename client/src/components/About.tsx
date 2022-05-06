@@ -88,6 +88,8 @@ const About = () => {
           </Row>
         </div>
       </div>
+      <br></br>
+      <br></br>
     </div>
   );
 };

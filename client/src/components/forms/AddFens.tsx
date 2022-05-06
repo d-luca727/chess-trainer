@@ -351,6 +351,8 @@ const AddFens = () => {
           </>
         )}
       </div>
+      <br></br>
+      <br></br>
     </>
   );
 };
