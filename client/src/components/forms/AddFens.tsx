@@ -25,6 +25,10 @@ import { toColor } from "../../utils/chessUtils";
 
 const Chessjs = require("chess.js");
 
+const validFenRegex = new RegExp(
+  /\s*([rnbqkpRNBQKP1-8]+\/){7}([rnbqkpRNBQKP1-8]+)\s[bw-]\s(([a-hkqA-HKQ]{1,4})|(-))\s(([a-h][36])|(-))\s\d+\s\d+\s*/
+);
+
 const AddFens = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,7 +46,7 @@ const AddFens = () => {
 
   const [boardWidth, setBoardWidth] = useState(700);
 
-  const [fen, setFen] = useState(
+  const [fen, setFen] = useState<string>(
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
   );
   const [positions, setPositions] = useState<Fens[]>([]);
@@ -50,6 +54,7 @@ const AddFens = () => {
   //validate move
   const validateMove = (value: string) => {
     chess.load(fen);
+
     let _chess = chess;
     return _chess.move(value) !== null;
   };
@@ -87,8 +92,7 @@ const AddFens = () => {
       fens: positions,
       private: state.password,
     };
-    console.log(data);
-    console.log(state.password);
+
     const post = async () => {
       try {
         await axios.post("/api/fens", data).then((res) => {
@@ -249,8 +253,10 @@ const AddFens = () => {
                 <Input
                   placeholder="Type the Position you want to study"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setFen(e.target.value);
-                    chess.load(e.target.value);
+                    if (validFenRegex.test(e.target.value) === true) {
+                      setFen(e.target.value);
+                      chess.load(e.target.value);
+                    }
                   }}
                 />
               </Form.Item>

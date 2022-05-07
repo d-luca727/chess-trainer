@@ -1,5 +1,3 @@
-//todo : fix addPosition fen is undefined bug
-
 import React, { useEffect, useState } from "react";
 import Chessground from "@react-chess/chessground";
 import { Button, Form, FormInstance, Input, message } from "antd";
@@ -9,6 +7,10 @@ import { toColor } from "../../utils/chessUtils";
 import { Fens } from "../../types";
 
 const Chessjs = require("chess.js");
+
+const validFenRegex = new RegExp(
+  /\s*([rnbqkpRNBQKP1-8]+\/){7}([rnbqkpRNBQKP1-8]+)\s[bw-]\s(([a-hkqA-HKQ]{1,4})|(-))\s(([a-h][36])|(-))\s\d+\s\d+\s*/
+);
 
 const { Item } = Form;
 
@@ -150,9 +152,10 @@ const FormComponent = (props: PropsInterface) => {
           <Input
             placeholder="Type the Position you want to study"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setFen(e.target.value);
-
-              chess.load(e.target.value);
+              if (validFenRegex.test(e.target.value) === true) {
+                setFen(e.target.value);
+                chess.load(e.target.value);
+              }
             }}
           />
         </Form.Item>
