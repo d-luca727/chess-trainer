@@ -3,7 +3,7 @@ dotenv.config();
 
 const path = require("path");
 const express = require("express");
-const connectDB = require("./config/db");
+const connectDB = require("../config/db");
 
 connectDB();
 
@@ -11,7 +11,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/api/fens", require("./routes/fens"));
+app.use("/api/fens", require("../routes/fens"));
 
 //server static assets
 if (process.env.NODE_ENV === "production") {
@@ -37,3 +37,5 @@ process.on("unhandledRejection", (err, promise) => {
   console.log("Logged Error: " + err);
   server.close(() => process.exit(1));
 });
+
+module.exports = app;
